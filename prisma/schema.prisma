@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model answers {
+  id            Int         @id @default(autoincrement())
+  avaliation_fk Int
+  question_fk   Int
+  item_fk       Int
+  created_at    DateTime?   @default(now()) @db.Timestamp(6)
+  avaliations   avaliations @relation(fields: [avaliation_fk], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  itens         itens       @relation(fields: [item_fk], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  questions     questions   @relation(fields: [question_fk], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model avaliations {
+  id              Int           @id @default(autoincrement())
+  title           String        @db.VarChar(100)
+  notes           String?       @db.VarChar(255)
+  client_fk       String        @db.Uuid
+  professional_fk String        @db.Uuid
+  scale_fk        Int
+  created_at      DateTime?     @default(now()) @db.Timestamp(6)
+  answers         answers[]
+  clients         clients       @relation(fields: [client_fk], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  professionals   professionals @relation(fields: [professional_fk], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  scales          scales        @relation(fields: [scale_fk], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model client_professional {
+  id              String        @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  client_fk       String        @db.Uuid
+  professional_fk String        @db.Uuid
+  archived        Boolean?      @default(false)
+  created_at      DateTime?     @default(now()) @db.Timestamp(6)
+  clients         clients       @relation(fields: [client_fk], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  professionals   professionals @relation(fields: [professional_fk], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model client_responsible {
+  id             String       @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  client_fk      String       @db.Uuid
+  responsible_fk String       @db.Uuid
+  archived       Boolean?     @default(false)
+  created_at     DateTime?    @default(now()) @db.Timestamp(6)
+  clients        clients      @relation(fields: [client_fk], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  responsibles   responsibles @relation(fields: [responsible_fk], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model clients {
+  id                  String                @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  image_url           String?               @db.VarChar(100)
+  identifier          String                @unique @db.VarChar(30)
+  code                String?               @db.VarChar(7)
+  full_name           String                @db.VarChar
+  birthdate           DateTime?             @db.Date
+  gender              gender_enum?
+  description         String?               @db.VarChar(100)
+  creator_fk          String?               @db.Uuid
+  created_at          DateTime?             @default(now()) @db.Timestamp(6)
+  avaliations         avaliations[]
+  client_professional client_professional[]
+  client_responsible  client_responsible[]
+  responsibles        responsibles?         @relation(fields: [creator_fk], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model itens {
+  id          Int       @id @default(autoincrement())
+  item_order  Int
+  content     String    @db.VarChar
+  score       Decimal?  @db.Decimal(3, 1)
+  question_fk Int
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  answers     answers[]
+  questions   questions @relation(fields: [question_fk], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model professionals {
+  id                  String                @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  identifier          String                @unique @db.VarChar(30)
+  full_name           String                @db.VarChar
+  image_url           String?               @db.VarChar
+  password            String                @db.VarChar
+  description         String?               @db.VarChar(100)
+  email               String                @unique @db.VarChar
+  specialty           String                @db.VarChar
+  created_at          DateTime?             @default(now()) @db.Timestamp(6)
+  avaliations         avaliations[]
+  client_professional client_professional[]
+}
+
+model questions {
+  id         Int       @id @default(autoincrement())
+  item_order Int
+  content    String    @db.VarChar
+  scale_fk   Int
+  domain     String    @db.VarChar
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  answers    answers[]
+  itens      itens[]
+  scales     scales    @relation(fields: [scale_fk], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model responsibles {
+  id                 String               @id @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  identifier         String               @unique @db.VarChar(30)
+  full_name          String               @db.VarChar
+  image_url          String?              @db.VarChar
+  password           String               @db.VarChar
+  description        String?              @db.VarChar(100)
+  email              String               @unique @db.VarChar
+  created_at         DateTime?            @default(now()) @db.Timestamp(6)
+  client_responsible client_responsible[]
+  clients            clients[]
+}
+
+model scales {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique @db.VarChar(100)
+  image_url   String?       @db.VarChar
+  description String        @db.VarChar(255)
+  created_at  DateTime?     @default(now()) @db.Timestamp(6)
+  avaliations avaliations[]
+  questions   questions[]
+}
+
+enum gender_enum {
+  male
+  female
+  unspecified
+}
