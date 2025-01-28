@@ -2,9 +2,9 @@ import { Router } from 'express';
 import { body, param, query } from 'express-validator';
 import {
   create
-} from '../../controller/professional';
-import { resolver } from '../../utils/routeAdapters';
-import validateRequest from '../../utils/validateRequest';
+} from '../controller/professional';
+import { resolver } from '../utils/routeAdapters';
+import validateRequest from '../utils/validateRequest';
 
 const router = Router();
 

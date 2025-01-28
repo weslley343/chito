@@ -1,9 +1,7 @@
 import express, { Request, Response, NextFunction, } from 'express';
-import routes from './view'
+import professionals from './view/professional'
 import dotenv from 'dotenv';
 import cors from 'cors'
-import { AcessDeniedError, DatabaseError, DomainLogicError, InteralServerError, RequestError } from './utils/erros'
-import { Prisma } from '@prisma/client';
 import { errorHandler } from './utils/errorHandler';
 dotenv.config();
 const app = express();
@@ -16,7 +14,7 @@ console.log(`make & refine`);
 
 app.use(express.json());
 
-app.use(routes)
+app.use("/professional",professionals)
 app.get('/', (req: Request, res: Response) => {
     res.json({ "msg": "hello BASE" })
 });
