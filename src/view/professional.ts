@@ -1,14 +1,16 @@
 import { Router } from 'express';
 import { body, param, query } from 'express-validator';
 import {
-  create
+  controllerProfessionalCreate,
+  controllerProfessionalSignin
 } from '../controller/professional';
+import { toBeImplemented } from '../controller/infra';
 import { resolver } from '../utils/routeAdapters';
 import validateRequest from '../utils/validateRequest';
 
-const router = Router();
+const professionalRoutes = Router();
 
-router.post('/',
+professionalRoutes.post('/',
   [
     body("identifier")
       .isString()
@@ -41,6 +43,24 @@ router.post('/',
       .withMessage('O campo "specialty" é obrigatório.'),
     validateRequest,
   ],
-  resolver(create));
+  resolver(controllerProfessionalCreate));
+professionalRoutes.post('/signin',
+  [
+    body('email').isEmail(),
+    body('password').isString(),
+    validateRequest
+  ],
+  resolver(controllerProfessionalSignin))
+  
+professionalRoutes.get('/byclient',
+  [
+    query('skip').isInt(),
+    query('take').isInt(),
+    query('client').isInt(),
+    validateRequest
+  ],
+  resolver(toBeImplemented))
+professionalRoutes.delete('/:id', resolver(toBeImplemented))
 
-export default router
+
+export default professionalRoutes

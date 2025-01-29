@@ -1,7 +1,9 @@
+import { encryptPassword } from '../utils/encriptor';
 import { DatabaseError } from '../utils/erros';
+import { generateTokens } from '../utils/generatePairOfTokens';
 import { prisma } from '../utils/prisma';
 
-export const create = async (
+export const modelProfessionalCreate = async (
     identifier: string,
     full_name: string,
     password: string,
@@ -14,18 +16,31 @@ export const create = async (
         data: {
             identifier,
             full_name,
-            password, // Salva a senha sem criptografia
+            password,
             description,
             email,
             specialty,
         },
     });
-    if(!professional){
+    if (!professional) {
         console.log(professional)
         throw new DatabaseError("Nao foi possível cadastrar profissional");
-        
+
     }
 
     return professional;
 
 };
+
+export const modelProfessionalSignin = async (password: string, email: string) => {
+    const professional = await prisma.professionals.findUnique({ where: { email: email } })
+    if (!professional) {
+        throw new DatabaseError("Coud'not recover data of email");
+    }
+    if (professional.password == encryptPassword(password)) {
+        let [acetoken, reftoken] = generateTokens(professional.id, professional.identifier, "professional")
+        return ({ "signin": true, "reftoken": reftoken, "acetoken": acetoken, "id": professional.id, "type": "professional", "identifier": professional.identifier })
+    }
+    return ({ "signing": false })
+
+}
