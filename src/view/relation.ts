@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { body, param, query } from 'express-validator';
 import { toBeImplemented } from '../controller/infra';
 import { SpecialistMiddleware } from '../utils/middlewares/Specialist';
-import { GuardianMiddleware } from '../utils/middlewares/Guardian';
+import { GuardianMiddleware } from '../utils/middlewares/Responsible';
 import validateRequest from '../utils/validateRequest';
 import { resolver } from '../utils/routeAdapters';
 

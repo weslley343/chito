@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { body, param, query } from 'express-validator';
 import {
   controllerProfessionalCreate,
+  controllerProfessionalDelete,
   controllerProfessionalSignin
 } from '../controller/professional';
 import { toBeImplemented } from '../controller/infra';
@@ -51,7 +52,7 @@ professionalRoutes.post('/signin',
     validateRequest
   ],
   resolver(controllerProfessionalSignin))
-  
+
 professionalRoutes.get('/byclient',
   [
     query('skip').isInt(),
@@ -60,7 +61,14 @@ professionalRoutes.get('/byclient',
     validateRequest
   ],
   resolver(toBeImplemented))
-professionalRoutes.delete('/:id', resolver(toBeImplemented))
+professionalRoutes.delete('/:id',
+  [
+    param('id')
+      .isUUID() 
+      .withMessage('Invalid uuid'),
+    validateRequest
+  ],
+  resolver(controllerProfessionalDelete))
 
 
 export default professionalRoutes

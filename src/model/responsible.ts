@@ -42,3 +42,13 @@ export const modelResponsibleSignin = async (password: string, email: string) =>
     return ({ "signing": false })
 
 }
+
+export const modelResponsibleDelete = async (id: string) => {
+    const responsible = await prisma.responsibles.delete({ where: { id: id } })
+    if (!responsible) {
+        throw new DatabaseError("Coud'not recover data of email");
+    }
+
+    return (responsible)
+
+}

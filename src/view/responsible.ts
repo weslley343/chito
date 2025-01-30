@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { controllerResponsibleCreate, controllerResponsibleSignin } from "../controller/responsible";
+import { controllerResponsibleCreate, controllerResponsibleDelete, controllerResponsibleSignin } from "../controller/responsible";
 import { body, param, query } from 'express-validator';
 import { resolver } from "../utils/routeAdapters";
 import validateRequest from "../utils/validateRequest";
@@ -44,7 +44,7 @@ responsibleRoutes.post('/',
         validateRequest,
     ],
     resolver(controllerResponsibleCreate))
-responsibleRoutes.delete('/:id', resolver(toBeImplemented))
+responsibleRoutes.delete('/:id', resolver(controllerResponsibleDelete))
 responsibleRoutes.get('/byclient',
     [
         query('skip').isInt(),

@@ -4,7 +4,7 @@ import { toBeImplemented } from '../controller/infra';
 import { resolver } from '../utils/routeAdapters';
 import validateRequest from '../utils/validateRequest';
 import { SpecialistMiddleware } from '../utils/middlewares/Specialist';
-import { GuardianMiddleware } from '../utils/middlewares/Guardian';
+import { GuardianMiddleware } from '../utils/middlewares/Responsible';
 import { controllerClientCreate } from '../controller/client';
 
 const clientRoutes = Router();

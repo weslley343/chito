@@ -15,13 +15,15 @@ export async function GuardianMiddleware(request: Request, response: Response, n
         response.status(401).json({ message: 'Invalid Auth Type or No Auth Value' });
         return
     }
+    
 
-    jwt.verify(authValue, process.env.SECRET_JWT, (err: Error, decoded: any) => {
+    jwt.verify(authValue, process.env.SECRET_JWT+"", (err: Error, decoded: any) => {
         if (err) {
+            console.log(err)
             return response.status(401).json({ message: 'Invalid Token' });
         }
 
-        if (String(decoded.token) === 'acetoken' && String(decoded.type) === 'guardian') {
+        if (String(decoded.token) === 'acetoken' && String(decoded.type) === 'responsible') {
             response.locals.id = decoded.id;
             return next();
         }

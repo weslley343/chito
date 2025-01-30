@@ -44,3 +44,13 @@ export const modelProfessionalSignin = async (password: string, email: string) =
     return ({ "signing": false })
 
 }
+
+export const modelProfessionalDelete = async (id: string) => {
+    const professional = await prisma.professionals.delete({ where: { id: id } })
+    if (!professional) {
+        throw new DatabaseError("Coud'not recover data of email");
+    }
+
+    return (professional)
+
+}

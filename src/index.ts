@@ -1,9 +1,10 @@
 import express, { Request, Response, NextFunction, } from 'express';
-import professionals from './view/professional'
+import professionalRoutes from './view/professional'
 import dotenv from 'dotenv';
 import cors from 'cors'
 import { errorHandler } from './utils/errorHandler';
-import responsible from './view/responsible';
+import responsibleRoutes from './view/responsible';
+import clientRoutes from './view/client';
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,8 +16,9 @@ console.log(`make & refine`);
 
 app.use(express.json());
 
-app.use("/professional", professionals)
-app.use("/responsible", responsible)
+app.use("/professional", professionalRoutes)
+app.use("/responsible", responsibleRoutes)
+app.use("/client", clientRoutes)
 app.get('/', (req: Request, res: Response) => {
     res.json({ "msg": "hello BASE" })
 });

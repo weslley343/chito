@@ -9,9 +9,9 @@ export const controllerClientCreate = async (req: Request, res: Response) => {
         full_name,
         birthdate,
         gender,
-        description,
-        creator_fk
+        description
     } = req.body;
-    const client = await modelClientCreate(identifier, randomCode(7), full_name, birthdate, gender, description, creator_fk);
+    const id = res.locals.id
+    const client = await modelClientCreate(identifier, randomCode(7), full_name, birthdate, gender, description, id);
     res.status(201).json(client);
 };

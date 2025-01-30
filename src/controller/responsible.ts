@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { modelResponsibleCreate, modelResponsibleSignin } from '../model/responsible';
+import { modelResponsibleCreate, modelResponsibleDelete, modelResponsibleSignin } from '../model/responsible';
 import { encryptPassword } from '../utils/encriptor';
 
 export const controllerResponsibleCreate = async (req: Request, res: Response) => {
@@ -19,4 +19,17 @@ export const controllerResponsibleSignin = async (req: Request, res: Response) =
     const { email, password } = req.body;
     const result = await modelResponsibleSignin(password, email);
     res.json(result).status(200);
+};
+
+export const controllerResponsibleDelete = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const responsible = await modelResponsibleDelete(id);
+    res.status(200).json({
+        "id": responsible.id,
+        "identifier": responsible.identifier,
+        "full_name": responsible.full_name,
+        "description": responsible.description,
+        "email": responsible.email,
+        "created_at": responsible.created_at
+    });
 };
