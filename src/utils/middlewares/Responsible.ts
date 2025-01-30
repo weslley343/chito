@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 const jwt = require('jsonwebtoken');
 
-export async function GuardianMiddleware(request: Request, response: Response, next: NextFunction) {
+export async function ResponsibleMiddleware(request: Request, response: Response, next: NextFunction) {
     const auth = request.headers.authorization;
 
     if (!auth) {

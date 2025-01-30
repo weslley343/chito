@@ -8,6 +8,8 @@ import {
 import { toBeImplemented } from '../controller/infra';
 import { resolver } from '../utils/routeAdapters';
 import validateRequest from '../utils/validateRequest';
+import { ProfessionalMiddleware } from '../utils/middlewares/Specialist';
+
 
 const professionalRoutes = Router();
 
@@ -61,13 +63,8 @@ professionalRoutes.get('/byclient',
     validateRequest
   ],
   resolver(toBeImplemented))
-professionalRoutes.delete('/:id',
-  [
-    param('id')
-      .isUUID() 
-      .withMessage('Invalid uuid'),
-    validateRequest
-  ],
+professionalRoutes.delete('/',
+  ProfessionalMiddleware,
   resolver(controllerProfessionalDelete))
 
 

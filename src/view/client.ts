@@ -3,9 +3,8 @@ import { body, param, query } from 'express-validator';
 import { toBeImplemented } from '../controller/infra';
 import { resolver } from '../utils/routeAdapters';
 import validateRequest from '../utils/validateRequest';
-import { SpecialistMiddleware } from '../utils/middlewares/Specialist';
-import { GuardianMiddleware } from '../utils/middlewares/Responsible';
-import { controllerClientCreate } from '../controller/client';
+import { ResponsibleMiddleware } from '../utils/middlewares/Responsible';
+import { controllerClientCreate, controllerClientDelete } from '../controller/client';
 
 const clientRoutes = Router();
 
@@ -37,11 +36,11 @@ clientRoutes.get('/byguardian',
 clientRoutes.get('/:id', resolver(toBeImplemented))
 clientRoutes.post(
     '/',
-    GuardianMiddleware,
+    ResponsibleMiddleware,
     resolver(controllerClientCreate)
 );
 
-clientRoutes.delete('/:id', resolver(toBeImplemented))
+clientRoutes.delete('/:clientid', ResponsibleMiddleware, resolver(controllerClientDelete))
 
 
 export default clientRoutes

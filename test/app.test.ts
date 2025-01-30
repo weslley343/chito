@@ -1,10 +1,6 @@
 import request from 'supertest';
 import app from '../src/index';  // Importe seu app Express
-import { server } from '../src/index';
 
-afterAll(() => {
-    server.close(); // Fecha o servidor após todos os testes
-});
 
 describe('Testando rotas do app', () => {
 

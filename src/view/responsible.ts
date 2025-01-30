@@ -4,6 +4,7 @@ import { body, param, query } from 'express-validator';
 import { resolver } from "../utils/routeAdapters";
 import validateRequest from "../utils/validateRequest";
 import { toBeImplemented } from "../controller/infra";
+import { ResponsibleMiddleware } from "../utils/middlewares/Responsible";
 
 const responsibleRoutes = Router()
 
@@ -44,7 +45,9 @@ responsibleRoutes.post('/',
         validateRequest,
     ],
     resolver(controllerResponsibleCreate))
-responsibleRoutes.delete('/:id', resolver(controllerResponsibleDelete))
+responsibleRoutes.delete('/', 
+    ResponsibleMiddleware, 
+    resolver(controllerResponsibleDelete))
 responsibleRoutes.get('/byclient',
     [
         query('skip').isInt(),

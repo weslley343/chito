@@ -24,7 +24,7 @@ export const controllerProfessionalSignin = async (req: Request, res: Response) 
 };
 
 export const controllerProfessionalDelete = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const id = res.locals.id;
     const professional = await modelProfessionalDelete(id);
     res.status(200).json({
         "id": professional.id,

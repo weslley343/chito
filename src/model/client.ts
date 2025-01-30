@@ -1,10 +1,10 @@
-import { gender_enum } from '@prisma/client';
+import { clients, gender_enum } from '@prisma/client';
 import { encryptPassword } from '../utils/encriptor';
 import { DatabaseError } from '../utils/erros';
 import { generateTokens } from '../utils/generatePairOfTokens';
 import { prisma } from '../utils/prisma';
 
-export const modelClientCreate = async (
+export const ClientCreate = async (
     identifier: string, 
     code: string,
     full_name: string, 
@@ -36,3 +36,26 @@ export const modelClientCreate = async (
     return client;
 
 };
+
+
+export const getClientById = async (id: string): Promise<clients> => {
+    const client = await prisma.clients.findUnique({ where: { id: id } })
+    if (!client) {
+        throw new DatabaseError("Coud'not recover data of ID");
+    }
+    return client
+}
+
+export const clientDelete = async (id: string, creator_fk: string) => {
+
+    const client = await prisma.clients.deleteMany({
+        where: {
+            id: id,
+            creator_fk: creator_fk
+        },
+    });
+    if (!client) {
+        throw new DatabaseError("Coud'not find client");
+    }
+    return client
+}

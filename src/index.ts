@@ -26,12 +26,10 @@ app.get('/', (req: Request, res: Response) => {
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     errorHandler(error, req, res, next);
 });
-const server = app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
-});
-
-
-
-export { server };
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => {
+        console.log(`Server is running at http://localhost:${port}`);
+    });
+}
 
 export default app

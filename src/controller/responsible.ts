@@ -22,7 +22,7 @@ export const controllerResponsibleSignin = async (req: Request, res: Response) =
 };
 
 export const controllerResponsibleDelete = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const id = res.locals.id;
     const responsible = await modelResponsibleDelete(id);
     res.status(200).json({
         "id": responsible.id,
