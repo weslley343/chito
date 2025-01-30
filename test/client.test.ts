@@ -1,6 +1,8 @@
 import request from 'supertest';
 import app from '../src/index';
-
+// não sei exatamente o motivo, mas se eu repetir o username ou email na suíte de testes,
+// o banco de dados ás vezes diz que o usuário já foi criado mesmo após o fluxo de deleção.
+// Por hora, por favor, criar fluxos de teste com nomes diferentes para cada arquivo.
 describe('Testando Login de responsible', () => {
     let token1, clientId;
 
