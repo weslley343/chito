@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import { ClientCreate, clientDelete, } from '../model/client';
+import { ClientCreate, clientDelete, clientDetail, } from '../model/client';
 import { encryptPassword } from '../utils/encriptor';
 import { randomCode } from '../utils/randomCode';
+import { modelClientResponsibleCreate } from '../model/relation';
 
 export const controllerClientCreate = async (req: Request, res: Response) => {
     const {
@@ -13,7 +14,17 @@ export const controllerClientCreate = async (req: Request, res: Response) => {
     } = req.body;
     const id = res.locals.id
     const client = await ClientCreate(identifier, randomCode(7), full_name, birthdate, gender, description, id);
+    await modelClientResponsibleCreate(client.id, id)
     res.status(201).json(client);
+};
+
+export const controllerClientDetail = async (req: Request, res: Response) => {
+    const {
+        clientid
+    } = req.params;
+    const id = res.locals.id
+    const client = await clientDetail(clientid);
+    res.status(200).json(client);
 };
 
 export const controllerClientDelete = async (req: Request, res: Response) => {
@@ -21,7 +32,6 @@ export const controllerClientDelete = async (req: Request, res: Response) => {
         clientid
     } = req.params;
     const id = res.locals.id
-    console.log(clientid, id)
     const client = await clientDelete(clientid, id);
     res.status(200).json(client);
 };

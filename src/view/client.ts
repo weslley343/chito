@@ -4,7 +4,7 @@ import { toBeImplemented } from '../controller/infra';
 import { resolver } from '../utils/routeAdapters';
 import validateRequest from '../utils/validateRequest';
 import { ResponsibleMiddleware } from '../utils/middlewares/Responsible';
-import { controllerClientCreate, controllerClientDelete } from '../controller/client';
+import { controllerClientCreate, controllerClientDelete, controllerClientDetail } from '../controller/client';
 
 const clientRoutes = Router();
 
@@ -33,14 +33,28 @@ clientRoutes.get('/byguardian',
     ],
     resolver(toBeImplemented))
 
-clientRoutes.get('/:id', resolver(toBeImplemented))
+clientRoutes.get('/:clientid',
+    [
+        param('clientid').isUUID().withMessage('clientid deve ser um UUID válido'),
+        validateRequest
+    ],
+    //todo: antes de detalhar, verificar se o usuário do token tem vínculo com o client em resposible ou professional
+    resolver(controllerClientDetail))
 clientRoutes.post(
     '/',
     ResponsibleMiddleware,
     resolver(controllerClientCreate)
 );
 
-clientRoutes.delete('/:clientid', ResponsibleMiddleware, resolver(controllerClientDelete))
+clientRoutes.delete(
+    '/:clientid',
+    [
+        param('clientid').isUUID().withMessage('clientid deve ser um UUID válido'),
+        validateRequest
+    ],
+    ResponsibleMiddleware,
+    resolver(controllerClientDelete)
+);
 
 
 export default clientRoutes

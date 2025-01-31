@@ -1,7 +1,7 @@
 import request from 'supertest';
 import app from '../src/index';  // Agora o servidor não inicia automaticamente
 
-describe('Testando Login de Profissional', () => {
+describe('Testando Rotas de Profissional', () => {
     test('POST / criar profissional', async () => {
         const response = await request(app)
             .post('/professional')

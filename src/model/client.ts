@@ -5,9 +5,9 @@ import { generateTokens } from '../utils/generatePairOfTokens';
 import { prisma } from '../utils/prisma';
 
 export const ClientCreate = async (
-    identifier: string, 
+    identifier: string,
     code: string,
-    full_name: string, 
+    full_name: string,
     birthdate: Date,
     gender: gender_enum,
     description: string,
@@ -17,11 +17,11 @@ export const ClientCreate = async (
 
     const client = await prisma.clients.create({
         data: {
-            identifier, 
+            identifier,
             code,
-            full_name, 
+            full_name,
             birthdate,
-            gender, 
+            gender,
             description,
             creator_fk
         }
@@ -39,6 +39,23 @@ export const ClientCreate = async (
 
 
 export const getClientById = async (id: string): Promise<clients> => {
+    const client = await prisma.clients.findUnique({ where: { id: id } })
+    if (!client) {
+        throw new DatabaseError("Coud'not recover data of ID");
+    }
+    return client
+}
+
+export const getClientByIdentifier = async (identifier: string): Promise<clients> => {
+    const client = await prisma.clients.findUnique({ where: { identifier: identifier } })
+    if (!client) {
+        throw new DatabaseError("Coud'not recover data of identifier");
+    }
+    return client
+}
+
+export const clientDetail = async (id: string) => {
+
     const client = await prisma.clients.findUnique({ where: { id: id } })
     if (!client) {
         throw new DatabaseError("Coud'not recover data of ID");

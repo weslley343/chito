@@ -5,38 +5,40 @@ import { toBeImplemented } from '../controller/infra';
 import { ResponsibleMiddleware } from '../utils/middlewares/Responsible';
 import validateRequest from '../utils/validateRequest';
 import { resolver } from '../utils/routeAdapters';
+import { ProfessionalMiddleware } from '../utils/middlewares/Specialist';
+import { controllerClientProfessionalCreate, controllerClientProfessionalDelete, controllerClientResponsibleCreate, controllerClientResponsibleDelete } from '../controller/relation';
 
 const relationRoutes = Router()
 
-relationRoutes.post('/specialist',
+relationRoutes.post('/professional',
     [
         body("code").isString(),
         body("identifier").isString(),
         validateRequest,
-        //SpecialistMiddleware,
+        ProfessionalMiddleware,
     ],
-    resolver(toBeImplemented))
-relationRoutes.post('/guardian',
+    resolver(controllerClientProfessionalCreate))
+relationRoutes.post('/responsible',
     [
         body("code").isString(),
         body("identifier").isString(),
         validateRequest,
         ResponsibleMiddleware,
     ],
-    resolver(toBeImplemented))
-relationRoutes.delete('/specialist',
+    resolver(controllerClientResponsibleCreate))
+relationRoutes.delete('/professional',
     [
-        body("client").isString(),
+        body("identifier").isString(),
         validateRequest,
-        //SpecialistMiddleware,
+        ProfessionalMiddleware,
     ],
-    resolver(toBeImplemented))
-relationRoutes.delete('/guaridan',
+    resolver(controllerClientProfessionalDelete))
+relationRoutes.delete('/responsible',
     [
-        body("client").isString(),
+        body("identifier").isString(),
         validateRequest,
         ResponsibleMiddleware,
     ],
-      resolver(toBeImplemented))
+    resolver(controllerClientResponsibleDelete))
 
 export default relationRoutes
