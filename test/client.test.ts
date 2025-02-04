@@ -11,11 +11,11 @@ describe('Testando Rotas de client', () => {
         const response = await request(app)
             .post('/responsible')
             .send({
-                identifier: 'nilce2',
+                identifier: 'nilce22',
                 full_name: 'Nilcelaine Moretto Martins',
                 password: 'senhaSegura123',
                 description: 'Hello, im using acompanhar(chito version)',
-                email: 'nilce2@email.com'
+                email: 'nilce22@email.com'
             });
 
         expect(response.status).toBe(201);
@@ -25,7 +25,7 @@ describe('Testando Rotas de client', () => {
         const loginResponse = await request(app)
             .post('/responsible/signin')
             .send({
-                email: 'nilce2@email.com',
+                email: 'nilce22@email.com',
                 password: 'senhaSegura123',
             });
 
@@ -39,7 +39,7 @@ describe('Testando Rotas de client', () => {
             .post('/client/')
             .set('Authorization', `Bearer ${token1}`)
             .send({
-                identifier: 'wess1',
+                identifier: 'wess2',
                 full_name: 'Weslley David Pereira Marques',
                 birthdate: '2002-11-25T00:00:00Z',
                 gender: 'male',
@@ -48,7 +48,7 @@ describe('Testando Rotas de client', () => {
 
         expect(clientResponse.status).toBe(201);
         expect(clientResponse.body).toMatchObject({
-            identifier: 'wess1',
+            identifier: 'wess2',
             full_name: 'Weslley David Pereira Marques',
             birthdate: '2002-11-25T00:00:00.000Z',
             gender: 'male',
@@ -85,9 +85,9 @@ describe('Testando Rotas de client', () => {
 
         expect(deleteResponse.status).toBe(200);
         expect(deleteResponse.body).toHaveProperty('id');
-        expect(deleteResponse.body).toHaveProperty('identifier', 'nilce2');
+        expect(deleteResponse.body).toHaveProperty('identifier', 'nilce22');
         expect(deleteResponse.body).toHaveProperty('full_name');
-        expect(deleteResponse.body).toHaveProperty('email', 'nilce2@email.com');
+        expect(deleteResponse.body).toHaveProperty('email', 'nilce22@email.com');
 
         // Verificar se o responsible realmente foi deletado
         const getResponsibleResponse = await request(app)

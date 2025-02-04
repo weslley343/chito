@@ -4,7 +4,8 @@ import { toBeImplemented } from '../controller/infra';
 import { resolver } from '../utils/routeAdapters';
 import validateRequest from '../utils/validateRequest';
 import { ResponsibleMiddleware } from '../utils/middlewares/Responsible';
-import { controllerClientCreate, controllerClientDelete, controllerClientDetail } from '../controller/client';
+import { controllerClientCreate, controllerClientDelete, controllerClientDetail, controllerGetByProfessional, controllerGetByResponsible } from '../controller/client';
+import { ProfessionalMiddleware } from '../utils/middlewares/Specialist';
 
 const clientRoutes = Router();
 
@@ -32,6 +33,17 @@ clientRoutes.get('/byguardian',
         validateRequest
     ],
     resolver(toBeImplemented))
+clientRoutes.get('/byprofessional',
+    query('skip').isInt(),
+    query('take').isInt(),
+    ProfessionalMiddleware,
+    resolver(controllerGetByProfessional))
+
+clientRoutes.get('/byresponsible',
+    query('skip').isInt(),
+    query('take').isInt(),
+    ResponsibleMiddleware,
+    resolver(controllerGetByResponsible))
 
 clientRoutes.get('/:clientid',
     [
@@ -46,6 +58,8 @@ clientRoutes.post(
     resolver(controllerClientCreate)
 );
 
+
+
 clientRoutes.delete(
     '/:clientid',
     [
@@ -55,6 +69,7 @@ clientRoutes.delete(
     ResponsibleMiddleware,
     resolver(controllerClientDelete)
 );
+
 
 
 export default clientRoutes

@@ -54,3 +54,28 @@ export const modelProfessionalDelete = async (id: string) => {
     return (professional)
 
 }
+
+export const getProfessionalByClientId = async (
+    skip: number,
+    take: number,
+    clientId: string // considerando que é um UUID, portanto, uma string
+  ) => {
+    const clientProfessionals = await prisma.client_professional.findMany({
+      skip,
+      take,
+      where: {
+        client_fk: clientId,
+      },
+      include: {
+        professionals: true, // inclui os dados do profissional relacionado
+      },
+    });
+  
+    // Extrai os dados do profissional do resultado
+    const professionals = clientProfessionals.map(
+      (entry) => entry.professionals
+    );
+  
+    return professionals;
+  };
+  

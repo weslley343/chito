@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { body, param, query } from 'express-validator';
 import {
+  controllerGetByClient,
   controllerProfessionalCreate,
   controllerProfessionalDelete,
   controllerProfessionalSignin
@@ -56,13 +57,11 @@ professionalRoutes.post('/signin',
   resolver(controllerProfessionalSignin))
 
 professionalRoutes.get('/byclient',
-  [
-    query('skip').isInt(),
-    query('take').isInt(),
-    query('client').isInt(),
-    validateRequest
-  ],
-  resolver(toBeImplemented))
+  query('skip').isInt(),
+  query('take').isInt(),
+  query('client').isUUID(),
+  resolver(controllerGetByClient))
+
 professionalRoutes.delete('/',
   ProfessionalMiddleware,
   resolver(controllerProfessionalDelete))

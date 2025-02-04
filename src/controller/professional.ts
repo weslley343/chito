@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { modelProfessionalCreate, modelProfessionalDelete, modelProfessionalSignin } from '../model/professional';
+import { getProfessionalByClientId, modelProfessionalCreate, modelProfessionalDelete, modelProfessionalSignin } from '../model/professional';
 import { encryptPassword } from '../utils/encriptor';
 
 export const controllerProfessionalCreate = async (req: Request, res: Response) => {
@@ -36,3 +36,12 @@ export const controllerProfessionalDelete = async (req: Request, res: Response) 
         "created_at": professional.created_at
     });
 };
+
+export const controllerGetByClient = async (req: Request, res: Response) => {
+
+    const id = res.locals.id
+    const { skip, take } = req.query;
+    const result = await getProfessionalByClientId(parseInt(skip as string), parseInt(take as string), id);
+    res.json(result).status(200)
+
+}

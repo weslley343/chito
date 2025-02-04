@@ -76,3 +76,55 @@ export const clientDelete = async (id: string, creator_fk: string) => {
     }
     return client
 }
+
+export const getClientByProfessionalId = async (
+    skip: number,
+    take: number,
+    professional: string  // considerando que professional_fk é do tipo String (UUID)
+) => {
+    const clientProfessionals = await prisma.client_professional.findMany({
+        skip,
+        take,
+        where: {
+            professional_fk: professional,
+        },
+        include: {
+            clients: true,  // inclui os dados do cliente relacionado
+        },
+    });
+
+    // Extrai os dados do cliente do resultado
+    const clientData = clientProfessionals.map(
+        (entry) => entry.clients
+    );
+
+    return clientData;
+};
+
+
+
+
+export const getClientByResponsibleId = async (
+    skip: number,
+    take: number,
+    responsible: string  // considerando que professional_fk é do tipo String (UUID)
+  ) => {
+    const clientResponsibles = await prisma.client_responsible.findMany({
+      skip,
+      take,
+      where: {
+        responsible_fk: responsible,
+      },
+      include: {
+        clients: true,  // inclui os dados do cliente relacionado
+      },
+    });
+  
+    // Extrai os dados do cliente do resultado
+    const clientData = clientResponsibles.map(
+      (entry) => entry.clients
+    );
+  
+    return clientData;
+  };
+  

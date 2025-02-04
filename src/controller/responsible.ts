@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { modelResponsibleCreate, modelResponsibleDelete, modelResponsibleSignin } from '../model/responsible';
+import { getResponsibleByClientId, modelResponsibleCreate, modelResponsibleDelete, modelResponsibleSignin } from '../model/responsible';
 import { encryptPassword } from '../utils/encriptor';
 
 export const controllerResponsibleCreate = async (req: Request, res: Response) => {
@@ -33,3 +33,13 @@ export const controllerResponsibleDelete = async (req: Request, res: Response) =
         "created_at": responsible.created_at
     });
 };
+
+export const controllerGetByClient = async (req: Request, res: Response) => {
+
+    const id = res.locals.id
+    const { skip, take } = req.query;
+    const result = await getResponsibleByClientId(parseInt(skip as string), parseInt(take as string), id);
+    res.json(result).status(200)
+
+}
+

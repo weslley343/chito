@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { controllerResponsibleCreate, controllerResponsibleDelete, controllerResponsibleSignin } from "../controller/responsible";
+import { controllerGetByClient, controllerResponsibleCreate, controllerResponsibleDelete, controllerResponsibleSignin } from "../controller/responsible";
 import { body, param, query } from 'express-validator';
 import { resolver } from "../utils/routeAdapters";
 import validateRequest from "../utils/validateRequest";
@@ -52,9 +52,8 @@ responsibleRoutes.get('/byclient',
     [
         query('skip').isInt(),
         query('take').isInt(),
-        query('client').isInt(),
         validateRequest
     ],
-    resolver(toBeImplemented))
+    resolver(controllerGetByClient))
 
 export default responsibleRoutes

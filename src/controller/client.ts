@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ClientCreate, clientDelete, clientDetail, } from '../model/client';
+import { ClientCreate, clientDelete, clientDetail, getClientByProfessionalId, getClientByResponsibleId } from '../model/client';
 import { encryptPassword } from '../utils/encriptor';
 import { randomCode } from '../utils/randomCode';
 import { modelClientResponsibleCreate } from '../model/relation';
@@ -35,3 +35,21 @@ export const controllerClientDelete = async (req: Request, res: Response) => {
     const client = await clientDelete(clientid, id);
     res.status(200).json(client);
 };
+
+export const controllerGetByProfessional = async (req: Request, res: Response) => {
+
+    const id = res.locals.id
+    const { skip, take } = req.query;
+    const result = await getClientByProfessionalId(parseInt(skip as string), parseInt(take as string), id);
+    res.json(result).status(200)
+
+}
+
+export const controllerGetByResponsible = async (req: Request, res: Response) => {
+
+    const id = res.locals.id
+    const { skip, take } = req.query;
+    const result = await getClientByResponsibleId(parseInt(skip as string), parseInt(take as string), id);
+    res.json(result).status(200)
+
+}

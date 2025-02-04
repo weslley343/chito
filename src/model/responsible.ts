@@ -52,3 +52,27 @@ export const modelResponsibleDelete = async (id: string) => {
     return (responsible)
 
 }
+
+export const getResponsibleByClientId = async (
+    skip: number,
+    take: number,
+    clientId: string // considerando que é um UUID, portanto, uma string
+  ) => {
+    const clientResponsibles = await prisma.client_responsible.findMany({
+      skip,
+      take,
+      where: {
+        client_fk: clientId,
+      },
+      include: {
+        responsibles: true, // inclui os dados do profissional relacionado
+      },
+    });
+  
+    // Extrai os dados do profissional do resultado
+    const responsibles = clientResponsibles.map(
+      (entry) => entry.responsibles
+    );
+  
+    return responsibles;
+  };
