@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts",
+    "crisis_report": "ts-node-dev --transpile-only --ignore-watch node_modules setup/crisisReport.ts",
     "start": "npm run build && prisma migrate deploy && node dist/index.js"
   },
   "repository": {
