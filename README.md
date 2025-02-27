@@ -1,12 +1,26 @@
-Girls Last Tour!
+# Acompanhar
 
-## Setup inicial
-git pull*
-instalar dependências*
-subir o container postgres*
-aplicar a migração*
-rodar as escalas*
-para o container postgres*
+## Setup 
+
+### Ubuntu Based Distros
+
+To setup this program, you must need to isntall _npm_ and _docker_. 
+Also to interaction we recomend to use our frontend, wich will be available soon _here_
+
+Add execution permission to scripts folder
+```
+cd scripts && chmod u+x *.sh
+```
+
+Setup the program
+```
+./scripts/setup.sh
+```
+
+Run the program
+```
+./scripts/start.sh
+```
 
 ## Start
 subir o container docker e rodar a aplicação

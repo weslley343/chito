@@ -3,7 +3,7 @@
 # Function to stop the Docker containers
 stop_containers() {
   echo "Stopping Docker containers..."
-  docker compose -f ../compose/postgres/docker-compose.yml stop
+  docker compose -f compose/postgres/docker-compose.yml stop
 }
 
 # Trap to ensure cleanup on script exit
@@ -11,7 +11,7 @@ trap stop_containers EXIT
 
 # Start the Docker containers
 echo "Starting Docker containers..."
-docker compose -f ../compose/postgres/docker-compose.yml up -d || {
+docker compose -f compose/postgres/docker-compose.yml up -d || {
   echo "Docker compose up failed"
   exit 1
 }
