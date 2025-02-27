@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -75,6 +75,13 @@ async function insertCrisisReport() {
 
 insertCrisisReport()
     .catch((e) => {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            // Handle unique constraint violation
+            if (e.code === 'P2002') {
+              //const targetField = e.meta?.target || 'unknown field';
+              console.error(`Test Already exist in the database - Dont worry, this error is prety normal during updates`);
+            }
+          }
         console.error(e);
     })
     .finally(async () => {
