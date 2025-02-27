@@ -21,6 +21,9 @@ app.use("/professional", professionalRoutes)
 app.use("/responsible", responsibleRoutes)
 app.use("/client", clientRoutes)
 app.use("/relation", relationRoutes)
+
+app.use('/static', express.static('public'))
+
 app.get('/', (req: Request, res: Response) => {
     res.json({ "msg": "hello BASE" })
 });

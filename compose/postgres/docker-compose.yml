@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: chito_db_prod
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: weslley
+      POSTGRES_PASSWORD: fegulidcas
+      POSTGRES_DB: chito_prod
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

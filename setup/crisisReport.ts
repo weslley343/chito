@@ -8,6 +8,7 @@ async function insertCrisisReport() {
         data: {
             name: "Relatório de Crise",
             description: "Escala utilizada para catalogar uma situação de crise desde a última secção.",
+            image_url: "/static/scales/crisis_report.png"
         },
     });
 

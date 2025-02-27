@@ -7,6 +7,8 @@ import validateRequest from '../utils/validateRequest';
 
 const scalesRoutes = Router()
 
+scalesRoutes.get('/', resolver(toBeImplemented))//retorna o teste do id especificado com nome, perguntas e alternativas
+
 scalesRoutes.get('/:id', resolver(toBeImplemented))//retorna o teste do id especificado com nome, perguntas e alternativas
 
 scalesRoutes.post('/submit',
