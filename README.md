@@ -14,6 +14,12 @@ Add execution permission to scripts folder
 cd scripts && chmod u+x *.sh && cd ..
 ```
 
+Remove previous instalation 
+(ATTENTION - it will also delete all the data of a previous instalation, including users and scales. Make a backup if you need something).
+```
+./scripts/clean.sh
+```
+
 Setup the program
 ```
 ./scripts/setup.sh
