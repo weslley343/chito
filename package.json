@@ -7,6 +7,7 @@
     "test": "jest",
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts",
     "crisis_report": "ts-node-dev --transpile-only --ignore-watch node_modules setup/crisisReport.ts",
+    "uuid_setup": "ts-node-dev --transpile-only --ignore-watch node_modules setup/uuid.ts",
 
     "scales": "docker compose -f compose/postgres/docker-compose.yml up -d && ts-node-dev --transpile-only --ignore-watch node_modules setup/scales.ts && ts-node-dev --transpile-only --ignore-watch node_modules setup/crisisReport.ts docker compose -f compose/postgres/docker-compose.yml stop",
     "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts"

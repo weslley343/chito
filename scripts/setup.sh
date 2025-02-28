@@ -12,31 +12,9 @@ npm install || { echo "npm install failed"; exit 1; }
 echo "Starting Docker containers..."
 docker compose -f compose/postgres/docker-compose.yml up -d || { echo "Docker compose up failed"; exit 1; }
 
-#install postgres UUID extension
-source .env
-
-psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_NAME <<EOF
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-EOF
-
-if [ $? -eq 0 ]; then
-  echo "Extensão 'uuid-ossp' instalada com sucesso!"
-else
-  echo "Erro ao instalar a extensão 'uuid-ossp'."
-fi
-
-export PGPASSWORD=$DB_PASSWORD
-
-psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_NAME <<EOF
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-EOF
-
-if [ $? -eq 0 ]; then
-  echo "Extensão 'uuid-ossp' instalada com sucesso!"
-else
-  echo "Erro ao instalar a extensão 'uuid-ossp'."
-fi
-
+# Run the scales script
+echo "Running uuid script..."
+npm run uuid_setup || { echo "npm run uuid_setup failed"; exit 1; }
 
 # Run Prisma migrations
 echo "Running Prisma migrations..."
