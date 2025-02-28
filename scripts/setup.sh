@@ -24,6 +24,8 @@ npx prisma migrate deploy || { echo "Prisma migrate deploy failed"; exit 1; }
 echo "Running scales script..."
 npm run scales || { echo "npm run scales failed"; exit 1; }
 
+npm run m_chat || { echo "npm run m_chat failed"; exit 1; }
+
 # Stop the Docker containers
 echo "Stopping Docker containers..."
 docker compose -f compose/postgres/docker-compose.yml stop || { echo "Docker compose stop failed"; exit 1; }
