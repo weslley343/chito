@@ -7,9 +7,11 @@
 To setup this program, you must need to isntall _npm_ and _docker_. 
 Also to interaction we recomend to use our frontend, wich will be available soon _here_
 
+Change .env configs
+
 Add execution permission to scripts folder
 ```
-cd scripts && chmod u+x *.sh
+cd scripts && chmod u+x *.sh && cd ..
 ```
 
 Setup the program

@@ -5,7 +5,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: weslley
+      POSTGRES_USER: chito
       POSTGRES_PASSWORD: fegulidcas
       POSTGRES_DB: chito_prod
     volumes:
