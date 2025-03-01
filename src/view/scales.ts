@@ -4,12 +4,13 @@ import { body, param, query } from 'express-validator';
 import { toBeImplemented } from '../controller/infra';
 import { resolver } from '../utils/routeAdapters';
 import validateRequest from '../utils/validateRequest';
+import { controllerScalesDetail, controllerScalesList } from '../controller/scales';
 
 const scalesRoutes = Router()
 
-scalesRoutes.get('/', resolver(toBeImplemented))//retorna o teste do id especificado com nome, perguntas e alternativas
+scalesRoutes.get('/', resolver(controllerScalesList))//retorna o teste do id especificado com nome, perguntas e alternativas
 
-scalesRoutes.get('/:id', resolver(toBeImplemented))//retorna o teste do id especificado com nome, perguntas e alternativas
+scalesRoutes.get('/:id', resolver(controllerScalesDetail))//retorna o teste do id especificado com nome, perguntas e alternativas
 
 scalesRoutes.post('/submit',
     [

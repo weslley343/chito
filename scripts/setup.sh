@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Pull the latest changes from the Git repository
-echo "Pulling latest changes from Git..."
-git pull || { echo "Git pull failed"; exit 1; }
+# echo "Pulling latest changes from Git..."
+# git pull || { echo "Git pull failed"; exit 1; }
 
 # Install npm dependencies
-echo "Installing npm dependencies..."
-npm install || { echo "npm install failed"; exit 1; }
+# echo "Installing npm dependencies..."
+# npm install || { echo "npm install failed"; exit 1; }
 
 # Start the Docker containers
 echo "Starting Docker containers..."

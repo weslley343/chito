@@ -6,6 +6,7 @@ import { errorHandler } from './utils/errorHandler';
 import responsibleRoutes from './view/responsible';
 import clientRoutes from './view/client';
 import relationRoutes from './view/relation';
+import scalesRoutes from './view/scales';
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,6 +22,7 @@ app.use("/professional", professionalRoutes)
 app.use("/responsible", responsibleRoutes)
 app.use("/client", clientRoutes)
 app.use("/relation", relationRoutes)
+app.use("/scale", scalesRoutes)
 
 app.use('/static', express.static('public'))
 
