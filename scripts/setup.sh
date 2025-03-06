@@ -34,6 +34,10 @@ for i in $(seq 1 $MAX_RETRIES); do
   fi
 done
 
+# Run npm install
+echo "Instaling dependencies..."
+npm install || { echo "dependencies failed"; exit 1; }
+
 # Run the uuid script
 echo "Running uuid script..."
 npm run uuid_setup || { echo "npm run uuid_setup failed"; exit 1; }
