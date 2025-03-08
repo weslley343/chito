@@ -4,28 +4,30 @@ import { body, param, query } from 'express-validator';
 import { toBeImplemented } from '../controller/infra';
 import { resolver } from '../utils/routeAdapters';
 import validateRequest from '../utils/validateRequest';
-import { controllerScalesDetail, controllerScalesList } from '../controller/scales';
+import { controllerScalesSubmit, controllerScalesList } from '../controller/scales';
+import { ProfessionalMiddleware } from '../utils/middlewares/Specialist';
 
 const scalesRoutes = Router()
 
 scalesRoutes.get('/', resolver(controllerScalesList))//retorna o teste do id especificado com nome, perguntas e alternativas
 
-scalesRoutes.get('/:id', resolver(controllerScalesDetail))//retorna o teste do id especificado com nome, perguntas e alternativas
+
 
 scalesRoutes.post('/submit',
     [
         body('title').isString(),
         body('notes').isString(),
-        body("client").isInt(),
-        body('answers').isArray().custom((answers) => answers.length === 77),//.isLength({min: 10, max: 10}),//.withMessage('As respostas devem ser um array com 77 itens'),
+        body("client").isUUID(),
+        body('answers').isArray().custom((answers) => answers.length > 0),//.isLength({min: 10, max: 10}),//.withMessage('As respostas devem ser um array com 77 itens'),
         body('answers.*.question').isInt().withMessage('O campo "question" deve ser um número inteiro'),
-        body('answers.*.answer').isInt().withMessage('O campo "answer" deve ser um número inteiro'),
-        //SpecialistMiddleware,
+        body('answers.*.item').isInt().withMessage('O campo "answer" deve ser um número inteiro'),
+        ProfessionalMiddleware,
         validateRequest
     ],
-    resolver(toBeImplemented)) //cadastra uma avaliação com suas respostas
+    resolver(controllerScalesSubmit)) //cadastra uma avaliação com suas respostas
 
 
+scalesRoutes.get('/:id', resolver(controllerScalesSubmit))//retorna o teste do id especificado com nome, perguntas e alternativas
 scalesRoutes.get('/resultoflasttest',
     [
         query('client').isInt(),
