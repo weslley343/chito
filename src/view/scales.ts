@@ -4,7 +4,7 @@ import { body, param, query } from 'express-validator';
 import { toBeImplemented } from '../controller/infra';
 import { resolver } from '../utils/routeAdapters';
 import validateRequest from '../utils/validateRequest';
-import { controllerScalesSubmit, controllerScalesList } from '../controller/scales';
+import { controllerScalesSubmit, controllerScalesList, controllerScalesDetail } from '../controller/scales';
 import { ProfessionalMiddleware } from '../utils/middlewares/Specialist';
 
 const scalesRoutes = Router()
@@ -15,6 +15,7 @@ scalesRoutes.get('/', resolver(controllerScalesList))//retorna o teste do id esp
 
 scalesRoutes.post('/submit',
     [
+        body('scale').isInt(),
         body('title').isString(),
         body('notes').isString(),
         body("client").isUUID(),
@@ -27,7 +28,7 @@ scalesRoutes.post('/submit',
     resolver(controllerScalesSubmit)) //cadastra uma avaliação com suas respostas
 
 
-scalesRoutes.get('/:id', resolver(controllerScalesSubmit))//retorna o teste do id especificado com nome, perguntas e alternativas
+scalesRoutes.get('/:id', resolver(controllerScalesDetail))//retorna o teste do id especificado com nome, perguntas e alternativas
 scalesRoutes.get('/resultoflasttest',
     [
         query('client').isInt(),
