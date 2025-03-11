@@ -2,22 +2,17 @@
 
 ## Setup 
 
-### Ubuntu Based Distros Only
+#### Ubuntu Based
 
 - To set up this program, you must install [_Node.js_](https://nodejs.org/) and [_Docker_](https://www.docker.com/).
 
 - Install frontend, wich will be available soon _here_ - stay aware : )
 
-- Change _.env_ and _/compose/postgres/dockercompose.yml_ in production stay the same if you only need to test
+- Change _.env_ and _/compose/postgres/dockercompose.yml_ in production
 
 Add execution permission to scripts folder
 ```
 chmod u+x *.sh
-```
-
-Remove previous instalation - *only if you need it (it will remove all, make a backup)
-```
-./remove.sh
 ```
 
 Setup the program
@@ -34,7 +29,11 @@ Run the program
 
 ## Criar versão de Demonstração
 
-
+## Remove
+Remove previous instalation - *only if you need it (it will remove all, make a backup)
+```
+./remove.sh
+```
 
 
 ## OBS:
