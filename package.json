@@ -10,7 +10,8 @@
     "uuid_setup": "ts-node-dev --transpile-only --ignore-watch node_modules setup/uuid.ts",
     "scales": "ts-node-dev --transpile-only --ignore-watch node_modules setup/scales.ts",
     "m_chat": "ts-node-dev --transpile-only --ignore-watch node_modules setup/mchat.ts",
-    "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts"
+    "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts",
+    "admin": "ts-node-dev --transpile-only --ignore-watch node_modules setup/admin/admin.ts"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "@types/crypto-js": "^4.2.2",
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.7",
+    "@types/readline-sync": "^1.4.8",
     "@types/supertest": "^6.0.2",
     "jest": "^29.7.0",
     "prisma": "^6.2.1",
@@ -43,6 +45,7 @@
     "express": "^4.21.2",
     "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2",
+    "readline-sync": "^1.4.10",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0"
   }

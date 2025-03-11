@@ -2,7 +2,7 @@ import { Prisma, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-async function insertCrisisReport() {
+async function insertMchat() {
     // 1. Criar a escala "Relatório de Crise"
     const scale = await prisma.scales.create({
         data: {
@@ -273,7 +273,7 @@ async function insertCrisisReport() {
     console.log("Relatório de Crise inserido com sucesso");
 }
 
-insertCrisisReport()
+insertMchat()
     .catch((e) => {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             // Handle unique constraint violation

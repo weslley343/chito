@@ -26,7 +26,35 @@ Run the program
 ```
 
 ## Adicionar Usuários
+#### Responsibles
+- cadastram clientes e detém os dados
+```
+curl -X POST http://localhost:4000/responsible \
+  -H "Content-Type: application/json" \
+  -d '{
+    "identifier": "leon1",
+    "full_name": "Leon Oliveira Martins",
+    "password": "senhaSegura123",
+    "description": "Responsible for managing clients",
+    "email": "leon1@email.com"
+  }'
 
+```
+#### Professionals
+- avaliam clientes
+```
+curl -X POST http://localhost:4000/professional \
+  -H "Content-Type: application/json" \
+  -d '{
+    "identifier": "leon1",
+    "full_name": "Leon Oliveira Martins",
+    "password": "senhaSegura123",
+    "description": "Hello, im using acompanhar(chito version)",
+    "email": "leon1@email.com",
+    "specialty": "Pediatra"
+  }'
+
+```
 ## Criar versão de Demonstração
 
 ## Remove
