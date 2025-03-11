@@ -78,11 +78,14 @@ insertCrisisReport()
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             // Handle unique constraint violation
             if (e.code === 'P2002') {
-              //const targetField = e.meta?.target || 'unknown field';
-              console.error(`Test Already exist in the database - Dont worry, this error is prety normal during updates`);
+                //const targetField = e.meta?.target || 'unknown field';
+                console.error(`ERR: Test Already exist in the database - Dont worry, this error is prety normal during updates`);
             }
-          }
-        console.error(e);
+        } else {
+            console.error(e);
+
+        }
+
     })
     .finally(async () => {
         await prisma.$disconnect();

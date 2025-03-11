@@ -193,7 +193,7 @@ async function insertCrisisReport() {
                 { item_order: 2, content: "Não", score: 0.0 },
             ],
         },
-        
+
         {
             item_order: 19,
             content: "Tenta chamar a sua atenção para o que está a fazer?",
@@ -213,7 +213,7 @@ async function insertCrisisReport() {
                 { item_order: 2, content: "Não", score: 0.0 },
             ],
         },
-        
+
         {
             item_order: 21,
             content: "Compreende o que as pessoas lhe dizem?",
@@ -234,7 +234,7 @@ async function insertCrisisReport() {
             ],
         },
 
-        
+
         {
             item_order: 23,
             content: "Procura a sua reacção facial quando se vê confrontada com situações desconhecidas?",
@@ -278,11 +278,14 @@ insertCrisisReport()
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             // Handle unique constraint violation
             if (e.code === 'P2002') {
-              //const targetField = e.meta?.target || 'unknown field';
-              console.error(`Test Already exist in the database - Dont worry, this error is prety normal during updates`);
+                //const targetField = e.meta?.target || 'unknown field';
+                console.error(`ERR: Test Already exist in the database - Dont worry, this error is prety normal during updates`);
             }
-          }
-        console.error(e);
+        }
+        else {
+            console.error(e);
+        }
+
     })
     .finally(async () => {
         await prisma.$disconnect();
