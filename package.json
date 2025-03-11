@@ -8,6 +8,7 @@
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts",
     "crisis_report": "ts-node-dev --transpile-only --ignore-watch node_modules setup/crisisReport.ts",
     "uuid_setup": "ts-node-dev --transpile-only --ignore-watch node_modules setup/uuid.ts",
+    "scales": "ts-node-dev --transpile-only --ignore-watch node_modules setup/scales.ts",
     "m_chat": "ts-node-dev --transpile-only --ignore-watch node_modules setup/mchat.ts",
     "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts"
   },
