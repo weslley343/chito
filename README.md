@@ -15,7 +15,7 @@ Add execution permission to scripts folder
 chmod u+x *.sh
 ```
 
-Remove previous instalation - *only if you need it
+Remove previous instalation - *only if you need it (it will remove all, make a backup)
 ```
 ./remove.sh
 ```
