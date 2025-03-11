@@ -4,25 +4,23 @@
 
 ### Ubuntu Based Distros Only
 
-To set up this program, you must install [_Node.js_](https://nodejs.org/) and [_Docker_](https://www.docker.com/).
+- To set up this program, you must install [_Node.js_](https://nodejs.org/) and [_Docker_](https://www.docker.com/).
 
-Also to interaction we recomend to use our frontend, wich will be available soon _here_
-A docker version will be also supported soon _here_ stay aware : )
+- Install frontend, wich will be available soon _here_ - stay aware : )
 
-- Change .env and /compose/postgres/dockercompose.yml in production
+- Change .env and /compose/postgres/dockercompose.yml in production stay the same if you only need to test
 
 Add execution permission to scripts folder
 ```
 chmod u+x *.sh
 ```
 
-Remove previous instalation if necessary
-(ATTENTION - it will also delete all the data of a previous instalation, including users and scales. Make a backup if you need something).
+Remove previous instalation - *only if you need it
 ```
 ./remove.sh
 ```
 
-Setup the program - also used during
+Setup the program
 ```
 ./setup.sh
 ```
