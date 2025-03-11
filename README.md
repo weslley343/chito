@@ -22,9 +22,9 @@ Remove previous instalation if necessary
 ./remove.sh
 ```
 
-Setup the program
+Setup the program - also used during
 ```
-./scripts/setup.sh
+./setup.sh
 ```
 
 Run the program
@@ -32,32 +32,16 @@ Run the program
 ./start.sh
 ```
 
-## Start
-subir o container docker e rodar a aplicação
-
-## Stop
-
 ## Adicionar Usuários
 
 ## Criar versão de Demonstração
 
 
-npm install &&
-docker-compose -f /compose/postgres/docker-compose.yml up -d &&
-npx prisma migrate deploy
 
 
-
-OBS:
+## OBS:
 devido a transicao de arquitetura, o middlewares ficaram com defeito e foram desabilitados.
 Atualizações serão adicionadas futuramente para isso.
 
-
-# setup
-verifica atualizações
-realiza setup do postgres
-setup do uuid
-insere as escalas m_chat e crisis_report
-fecha o banco de dados
 
 
