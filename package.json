@@ -10,6 +10,7 @@
     "uuid_setup": "ts-node-dev --transpile-only --ignore-watch node_modules setup/uuid.ts",
     "scales": "ts-node-dev --transpile-only --ignore-watch node_modules setup/scales.ts",
     "m_chat": "ts-node-dev --transpile-only --ignore-watch node_modules setup/mchat.ts",
+    "atec": "ts-node-dev --transpile-only --ignore-watch node_modules setup/atec.ts",
     "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts",
     "admin": "ts-node-dev --transpile-only --ignore-watch node_modules setup/admin/admin.ts"
   },

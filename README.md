@@ -1,5 +1,6 @@
 # Acompanhar - Alpha
 
+Ferramenta para acompanhamento do transtorno do espectro autista e realização de previsões de melhoria com base em k-means
 ## Setup 
 
 #### Ubuntu Based

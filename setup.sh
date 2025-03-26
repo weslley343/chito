@@ -49,7 +49,9 @@ npm run scales || { echo "npm run scales failed"; exit 1; }
 
 npm run m_chat || { echo "npm run m_chat failed"; exit 1; }
 
-npm run crisis_report || { echo "npm run m_chat failed"; exit 1; }
+npm run crisis_report || { echo "npm run crisis_report failed"; exit 1; }
+
+npm run atec || { echo "npm run atec failed"; exit 1; }
 
 # Stop the Docker containers
 echo "Stopping Docker containers..."
