@@ -18,7 +18,7 @@ async function main() {
             created_at: new Date(), // Data de criação
         },
     });
-    console.log(`Responsável inserido: ${responsible.full_name}`);
+    // console.log(`Responsável inserido: ${responsible.full_name}`);
 
     // Insere um profissional no banco de dados
     const professional = await prisma.professionals.create({
@@ -32,16 +32,16 @@ async function main() {
             created_at: new Date(), // Data de criação
         },
     });
-    console.log(`Profissional inserido: ${professional.full_name}`);
+    // console.log(`Profissional inserido: ${professional.full_name}`);
 
     // Insere 30 usuários no banco de dados
     const names = ["Alice", "Miguel", "Sophia", "Arthur", "Helena", "Bernardo", "Valentina", "Heitor", "Laura", "Davi", "Isabella", "Lorenzo", "Manuela", "Théo", "Júlia", "Pedro", "Heloísa", "Gabriel", "Luiza", "Enzo", "Maria", "Matheus", "Lorena", "Lucas", "Lívia", "Benjamin", "Giovanna", "Nicolas", "Maria Eduarda", "Guilherme", "Beatriz"];
     const users = [];
-    for (let i = 1; i <= 30; i++) {
+    for (let i = 1; i <= 3; i++) {
         const user = await prisma.clients.create({
             data: {
                 identifier: `user${i}${names[i]}`, // Identificador único
-                full_name: `${names[i]} Demo[${i}]`, // Nome completo
+                full_name: `${names[i]}${i} Demo`, // Nome completo
                 birthdate: new Date(2000, 0, i), // Data de nascimento fictícia
                 gender: i % 2 === 0 ? 'male' : 'female', // Gênero alternado
                 description: `Descrição do usuário ${i}`, // Descrição
@@ -110,7 +110,7 @@ async function main() {
                             created_at: new Date(), // Data de criação
                         },
                     });
-                    console.log(`Item "${randomItem.content}" associado à avaliação do usuário ${user.full_name}`);
+                    //console.log(`Item "${randomItem.content}" associado à avaliação do usuário ${user.full_name}`);
                 }
             }
         }
@@ -120,7 +120,7 @@ async function main() {
 
     // Cria mais quatro avaliações para cada usuário
     for (const user of users) {
-        for (let i = 1; i <= 4; i++) {
+        for (let i = 1; i <= 1; i++) {
             // Busca a última avaliação do usuário
             const lastEvaluation = await prisma.avaliations.findFirst({
                 where: { client_fk: user.id }, // Filtra pelo cliente
@@ -134,7 +134,7 @@ async function main() {
                 },
             });
 
-            if (lastEvaluation) {
+            if (lastEvaluation) {//caso a última avaliação seja encontrada
                 const newEvaluation = await prisma.avaliations.create({
                     data: {
                         client_fk: user.id, // Chave estrangeira do cliente
@@ -144,9 +144,12 @@ async function main() {
                         created_at: new Date(), // Data de criação
                     },
                 });
+               
 
                 // Associa itens às perguntas da nova avaliação com base na última avaliação
                 for (const question of atecScale?.questions || []) {
+                   
+
                     // Busca a última resposta para a pergunta atual
                     const lastAnswer = lastEvaluation.answers.find(
                         (answer) => answer.question_fk === question.id
@@ -164,12 +167,21 @@ async function main() {
                                 lastAnswer.itens.score !== null &&
                                 item.score < lastAnswer.itens.score
                         );
-                    } else if (lastAnswer) {
-                        // Seleciona um item com score igual ao da última resposta
+                    } 
+                    
+                    if (!selectedItem && lastAnswer) {
+                        // Se não encontrou um item com score menor, seleciona um item com score igual ao da última resposta
                         selectedItem = question.itens.find(
                             (item) => item.score === lastAnswer.itens.score
                         );
                     }
+
+                    if (!selectedItem) {
+                        // Se ainda não encontrou, seleciona o primeiro item disponível como fallback
+                        selectedItem = question.itens[0];
+                    }
+
+                    console.log(selectedItem);
 
                     if (selectedItem) {
                         // Cria uma nova resposta associando o item selecionado à nova avaliação
@@ -185,6 +197,9 @@ async function main() {
                             `Item "${selectedItem.content}" associado à avaliação ${i} do usuário ${user.full_name}`
                         );
                     }
+
+                     //esse loop está okay
+                     console.log(`Pergunta: ${question.item_order}`);
                 }
             }
         }
