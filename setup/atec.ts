@@ -181,7 +181,11 @@ async function insertCrisisReport() {
                 { item_order: 3, content: "Descreve meu filho", score: 2 },
             ]
         },
-        { item_order: 24, content: "Não imita", domain: "Sociabilidade", items: [] },
+        { item_order: 24, content: "Não imita", domain: "Sociabilidade", items: [
+            { item_order: 1, content: "Não descritivo", score: 0 },
+            { item_order: 2, content: "Mais ou menos", score: 1 },
+            { item_order: 3, content: "Descreve meu filho", score: 2 },
+        ] },
         {
             item_order: 25, content: "Não gosta que lhe abracem ou acariciem", domain: "Sociabilidade", items: [
                 { item_order: 1, content: "Não descritivo", score: 0 },
