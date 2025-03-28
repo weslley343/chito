@@ -119,7 +119,7 @@ async function main() {
 
     // Cria mais quatro avaliações para cada usuário
     for (const user of users) {
-        for (let i = 1; i <= 1; i++) {
+        for (let i = 2; i <= 4; i++) {
             // Busca a última avaliação do usuário
             const lastEvaluation = await prisma.avaliations.findFirst({
                 where: { client_fk: user.id }, // Filtra pelo cliente
