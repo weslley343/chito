@@ -18,7 +18,6 @@ async function main() {
             created_at: new Date(), // Data de criação
         },
     });
-    // console.log(`Responsável inserido: ${responsible.full_name}`);
 
     // Insere um profissional no banco de dados
     const professional = await prisma.professionals.create({
@@ -32,7 +31,6 @@ async function main() {
             created_at: new Date(), // Data de criação
         },
     });
-    // console.log(`Profissional inserido: ${professional.full_name}`);
 
     // Insere 30 usuários no banco de dados
     const names = ["Alice", "Miguel", "Sophia", "Arthur", "Helena", "Bernardo", "Valentina", "Heitor", "Laura", "Davi", "Isabella", "Lorenzo", "Manuela", "Théo", "Júlia", "Pedro", "Heloísa", "Gabriel", "Luiza", "Enzo", "Maria", "Matheus", "Lorena", "Lucas", "Lívia", "Benjamin", "Giovanna", "Nicolas", "Maria Eduarda", "Guilherme", "Beatriz"];
@@ -49,7 +47,6 @@ async function main() {
             },
         });
         users.push(user); // Adiciona o usuário à lista
-        console.log(`Usuário inserido: ${user.full_name}`);
     }
 
     // Associa os usuários ao profissional
@@ -61,7 +58,6 @@ async function main() {
                 created_at: new Date(), // Data de criação
             },
         });
-        console.log(`Usuário ${user.full_name} associado ao profissional ${professional.full_name}`);
     }
 
     // Busca a escala "ATEC" e suas perguntas e itens
@@ -70,20 +66,24 @@ async function main() {
         include: {
             questions: {
                 include: {
-                    itens: true, // Inclui os itens de cada pergunta
+                    itens: {
+                        orderBy: {
+                            item_order: 'desc', // Ordena os itens pelo campo "item_order" em ordem decrescente
+                        },
+                    },
                 },
             },
         },
     });
 
     if (atecScale) {
-        console.log(`Escala "ATEC" encontrada: ${atecScale.name}`);
-        for (const question of atecScale.questions) {
-            console.log(`Pergunta: ${question.content}`);
-            for (const iten of question.itens) {
-                console.log(`  Item: ${iten.content}`);
-            }
-        }
+        // console.log(`Escala "ATEC" encontrada: ${atecScale.name}`);
+        // for (const question of atecScale.questions) {
+        //     console.log(`Pergunta: ${question.content}`);
+        //     for (const iten of question.itens) {
+        //         console.log(`  Item: ${iten.content}`);
+        //     }
+        // }
 
         // Cria avaliações para cada usuário
         for (const user of users) {
@@ -110,7 +110,6 @@ async function main() {
                             created_at: new Date(), // Data de criação
                         },
                     });
-                    //console.log(`Item "${randomItem.content}" associado à avaliação do usuário ${user.full_name}`);
                 }
             }
         }
@@ -128,11 +127,12 @@ async function main() {
                 include: {
                     answers: {
                         include: {
-                            itens: true, // Inclui os itens das respostas
+                            itens: true, // Inclui os itens sem ordenação
                         },
                     },
                 },
             });
+
 
             if (lastEvaluation) {//caso a última avaliação seja encontrada
                 const newEvaluation = await prisma.avaliations.create({
@@ -144,62 +144,66 @@ async function main() {
                         created_at: new Date(), // Data de criação
                     },
                 });
-               
+
 
                 // Associa itens às perguntas da nova avaliação com base na última avaliação
                 for (const question of atecScale?.questions || []) {
-                   
+
 
                     // Busca a última resposta para a pergunta atual
                     const lastAnswer = lastEvaluation.answers.find(
                         (answer) => answer.question_fk === question.id
                     );
 
+                    console.log(lastAnswer)
+                    if (!lastAnswer?.itens) {
+                        console.log("não tem itens")
+                        break
+                    }
+
                     // Sorteia verdadeiro ou falso para decidir a lógica de seleção do item
-                    const randomResult = Math.random() < 0.5;
+                    const randomResult = Math.random() < 0.2;
+                    // const randomResult = true
+                    let selectedItemId;
                     let selectedItem;
+                    //EDICAO COMECA AQUI
 
-                    if (randomResult && lastAnswer) {
-                        // Seleciona um item com score menor que o da última resposta, se possível
-                        selectedItem = question.itens.find(
-                            (item) =>
-                                item.score !== null &&
-                                lastAnswer.itens.score !== null &&
-                                item.score < lastAnswer.itens.score
-                        );
-                    } 
-                    
-                    if (!selectedItem && lastAnswer) {
-                        // Se não encontrou um item com score menor, seleciona um item com score igual ao da última resposta
-                        selectedItem = question.itens.find(
-                            (item) => item.score === lastAnswer.itens.score
-                        );
+                    //lastAnswer é um objeto com a úlitima resposta de um usuário para a pergunda em questão
+                    //itens de lastAnswer contém apenas 1 item dentro do array que corresponde a resposta que o usuário deu para a pergunta
+
+                    //question contém o conteúdo da questão que está sendo decidida a resposta
+                    //question.itens contém todos os itens que estão disponíveis para a pergunta
+                    if (randomResult) {
+                        if (question.itens && Array.isArray(question.itens)) {
+                            selectedItem = question.itens.find(
+                                (item) => item.item_order < lastAnswer.itens.item_order
+                            );
+                            selectedItemId = selectedItem?.id;
+                        }
+                        if (typeof selectedItem?.id != "number") {
+                            selectedItemId = lastAnswer.item_fk;
+                        }
+
+                    } else {
+                        console.log(lastAnswer?.itens)
+                        selectedItemId = lastAnswer.item_fk;
                     }
 
-                    if (!selectedItem) {
-                        // Se ainda não encontrou, seleciona o primeiro item disponível como fallback
-                        selectedItem = question.itens[0];
-                    }
 
-                    console.log(selectedItem);
+                    console.log(selectedItemId);
 
-                    if (selectedItem) {
+                    if (selectedItemId) {
                         // Cria uma nova resposta associando o item selecionado à nova avaliação
                         await prisma.answers.create({
                             data: {
                                 avaliation_fk: newEvaluation.id, // Chave estrangeira da nova avaliação
                                 question_fk: question.id, // Chave estrangeira da pergunta
-                                item_fk: selectedItem.id, // Chave estrangeira do item selecionado
+                                item_fk: selectedItemId, // Chave estrangeira do item selecionado
                                 created_at: new Date(), // Data de criação
                             },
                         });
-                        console.log(
-                            `Item "${selectedItem.content}" associado à avaliação ${i} do usuário ${user.full_name}`
-                        );
-                    }
 
-                     //esse loop está okay
-                     console.log(`Pergunta: ${question.item_order}`);
+                    }
                 }
             }
         }
