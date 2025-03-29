@@ -10,17 +10,17 @@
         "preLaunchTask": "tsc: build - tsconfig.json",
         "sourceMaps": true
       },
-      {
-        "name": "Debug demo.ts",
-        "type": "node",
-        "request": "launch",
-        "program": "${workspaceFolder}/setup/demo/demo.ts",
-        "outFiles": ["${workspaceFolder}/dist/**/*.js"],
-        "preLaunchTask": "tsc: build - tsconfig.json",
-        "sourceMaps": true,
-        "cwd": "${workspaceFolder}",
-        "skipFiles": ["<node_internals>/**"]
-      },
+      // {
+      //   "name": "Debug demo.ts",
+      //   "type": "node",
+      //   "request": "launch",
+      //   "program": "${workspaceFolder}/setup/demo/demo.ts",
+      //   "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      //   "preLaunchTask": "tsc: build - tsconfig.json",
+      //   "sourceMaps": true,
+      //   "cwd": "${workspaceFolder}",
+      //   "skipFiles": ["<node_internals>/**"]
+      // },
       {
         "name": "Debug demo.ts with ts-node",
         "type": "node",

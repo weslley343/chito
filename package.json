@@ -13,7 +13,7 @@
     "atec": "ts-node-dev --transpile-only --ignore-watch node_modules setup/atec.ts",
     "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts",
     "admin": "ts-node-dev --transpile-only --ignore-watch node_modules setup/admin/admin.ts",
-    "demo": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demo.ts"
+    "demo": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoAtec.ts"
   },
   "repository": {
     "type": "git",
