@@ -27,7 +27,13 @@ Run the program
 ```
 
 ## Adicionar Usuários
-#### Responsibles
+
+Run the program
+```
+./admin.sh
+```
+
+<!-- #### Responsibles
 - cadastram clientes e detém os dados
 ```
 curl -X POST http://localhost:4000/responsible \
@@ -55,10 +61,12 @@ curl -X POST http://localhost:4000/professional \
     "specialty": "Pediatra"
   }'
 
+``` -->
+## Criar versão de Demonstração (Dont make it in production)
 ```
-## Criar versão de Demonstração
-
-## Remove
+./demo.sh
+```
+## Remove (Dont make it in production)
 Remove previous instalation - *only if you need it (it will remove all, make a backup)
 ```
 ./remove.sh
