@@ -62,11 +62,11 @@ curl -X POST http://localhost:4000/professional \
   }'
 
 ``` -->
-## Criar versão de Demonstração (Dont make it in production)
+## Create Demonstration Version (Dont make it in production)
 ```
 ./demo.sh
 ```
-## Remove (Dont make it in production)
+## Remove all data (Dont make it in production)
 Remove previous instalation - *only if you need it (it will remove all, make a backup)
 ```
 ./remove.sh
@@ -74,8 +74,7 @@ Remove previous instalation - *only if you need it (it will remove all, make a b
 
 
 ## OBS:
-devido a transicao de arquitetura, o middlewares ficaram com defeito e foram desabilitados.
-Atualizações serão adicionadas futuramente para isso.
+This is an alpha version with security issues
 
 
 
