@@ -6,7 +6,7 @@ async function insertMchat() {
     // 1. Criar a escala "Relatório de Crise"
     const scale = await prisma.scales.create({
         data: {
-            name: "M Chat",
+            name: "MChat",
             description: "O (M-CHAT) é um breve questionário referente ao desenvolvimento e comportamento utilizado em crianças dos 16 aos 30 meses, com o objectivo de rastrear as perturbações do espectro do autismo (PEA).",
             image_url: "/static/scales/mchat.png"
         },

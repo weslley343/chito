@@ -7,9 +7,9 @@ async function main() {
 
     const responsible = await prisma.responsibles.create({
         data: {
-            identifier: 'Ruan737',
-            full_name: 'João Ruan Montenegro Silva',
-            email: 'r.montenetgro@acompanhar.com',
+            identifier: 'Matias737',
+            full_name: 'Matias Ransom Farm',
+            email: 'matias@acompanhar.com',
             password: await encryptPassword('senhaSegura123'),
             description: 'Responsável pelo acompanhamento.',
             created_at: new Date(),
@@ -18,9 +18,9 @@ async function main() {
 
     const professional = await prisma.professionals.create({
         data: {
-            identifier: 'mariaoliv',
-            full_name: 'Maria Oliveira',
-            email: 'maria.oliveira@acompanhar.com',
+            identifier: 'Lara',
+            full_name: 'Lara Duatadé De Salvilha',
+            email: 'lara.d@acompanhar.com',
             password: await encryptPassword('senhaSegura123'),
             specialty: 'Psicólogo',
             description: 'Profissional especializado em psicologia infantil.',
@@ -29,22 +29,21 @@ async function main() {
     });
 
     // Insere 30 usuários no banco de dados
-
     const names = [
-        "Alice", "Antonio", "Ana", "Arthur", "Amanda", "Augusto",
-        "Aline", "André", "Adriana", "Alex", "Alessandra", "Alan",
-        "Amélia", "Adriano", "Aurora", "Ariano", "Alana", "Antony",
-        "Aída", "Axel", "Ariane", "Afonso", "Aurelia", "Abel",
-        "Angelina", "Alberto", "Agnese", "Agenor", "Ayumi", "Anselmo"
-    ];
-
+        "Mariana", "Mateus", "Melissa", "Miguel", "Mirela", "Marcelo", 
+        "Mônica", "Maurício", "Mabel", "Matheus", "Mara", "Murilo", 
+        "Manuela", "Max", "Milena", "Moacir", "Maysa", "Marlon", 
+        "Malu", "Martim", "Maísa", "Mário", "Michele", "Marco", 
+        "Melina", "Marcos", "Marília", "Manoel", "Mafalda", "Márcio"
+      ];
+      
     const users = [];
     // Cria 3 usuários
     for (let i = 1; i <= 3; i++) {//alterar o 3 para mudar a quantidade de usuários criados. OBS: Max de 30 usuários
         const user = await prisma.clients.create({
             data: {
                 identifier: `user${i}-${names[i]}`,
-                full_name: `${names[i]}${i} Adelino Silva`,
+                full_name: `${names[i]}${i} Marcelin Silva`,
                 birthdate: new Date(2000, 0, i),
                 gender: i % 2 === 0 ? 'male' : 'female',
                 description: `Descrição do usuário ${names[i]}`,
@@ -66,7 +65,7 @@ async function main() {
 
     // Busca a escala "ATEC" e suas perguntas e itens
     const atecScale = await prisma.scales.findFirst({
-        where: { name: 'ATEC' }, // Alterar aqui para mudar a escala
+        where: { name: 'MChat' }, // Alterar aqui para mudar a escala
         include: {
             questions: {
                 include: {
@@ -199,7 +198,7 @@ async function main() {
         }
     }
     console.log("--------------------------------------------------------");
-    console.log("ATEC inserido com sucesso");
+    console.log("MCHAT inserido com sucesso");
     console.log("responsible: ", responsible.email + " - senhaSegura123");
     console.log("professional: ", professional.email + " - senhaSegura123");
     console.log("--------------------------------------------------------");

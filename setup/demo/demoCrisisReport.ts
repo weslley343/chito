@@ -7,9 +7,9 @@ async function main() {
 
     const responsible = await prisma.responsibles.create({
         data: {
-            identifier: 'Ruan737',
-            full_name: 'João Ruan Montenegro Silva',
-            email: 'r.montenetgro@acompanhar.com',
+            identifier: 'Alexa737',
+            full_name: 'Alexa Hill Bradbury',
+            email: 'a.hill@acompanhar.com',
             password: await encryptPassword('senhaSegura123'),
             description: 'Responsável pelo acompanhamento.',
             created_at: new Date(),
@@ -18,9 +18,9 @@ async function main() {
 
     const professional = await prisma.professionals.create({
         data: {
-            identifier: 'mariaoliv',
-            full_name: 'Maria Oliveira',
-            email: 'maria.oliveira@acompanhar.com',
+            identifier: 'EdisonVI',
+            full_name: 'Edison Vieira Casteliano',
+            email: 'edison@acompanhar.com',
             password: await encryptPassword('senhaSegura123'),
             specialty: 'Psicólogo',
             description: 'Profissional especializado em psicologia infantil.',
@@ -29,14 +29,14 @@ async function main() {
     });
 
     // Insere 30 usuários no banco de dados
-
     const names = [
-        "Alice", "Antonio", "Ana", "Arthur", "Amanda", "Augusto",
-        "Aline", "André", "Adriana", "Alex", "Alessandra", "Alan",
-        "Amélia", "Adriano", "Aurora", "Ariano", "Alana", "Antony",
-        "Aída", "Axel", "Ariane", "Afonso", "Aurelia", "Abel",
-        "Angelina", "Alberto", "Agnese", "Agenor", "Ayumi", "Anselmo"
+        "Carolina", "Carlos", "Cecília", "Caio", "Camila", "César",
+        "Clara", "Cristiano", "Catarina", "Célio", "Celeste", "Cláudio",
+        "Cíntia", "Cassiano", "Cristiane", "Clécio", "Carmen", "Cedric",
+        "Clarissa", "Conrado", "Célia", "Claudemir", "Crislaine", "Ciro",
+        "Carla", "Cristóvão", "Cléa", "Camilo", "Cássia", "Cosme"
     ];
+
 
     const users = [];
     // Cria 3 usuários
@@ -44,7 +44,7 @@ async function main() {
         const user = await prisma.clients.create({
             data: {
                 identifier: `user${i}-${names[i]}`,
-                full_name: `${names[i]}${i} Adelino Silva`,
+                full_name: `${names[i]}${i} Marcelin Silva`,
                 birthdate: new Date(2000, 0, i),
                 gender: i % 2 === 0 ? 'male' : 'female',
                 description: `Descrição do usuário ${names[i]}`,
@@ -64,9 +64,9 @@ async function main() {
         });
     }
 
-    // Busca a escala "ATEC" e suas perguntas e itens
-    const atecScale = await prisma.scales.findFirst({
-        where: { name: 'ATEC' }, // Alterar aqui para mudar a escala
+    // Busca a escala "Crisis Report" e suas perguntas e itens
+    const cRScale = await prisma.scales.findFirst({
+        where: { name: 'Crisis Report' }, // Alterar aqui para mudar a escala
         include: {
             questions: {
                 include: {
@@ -80,14 +80,14 @@ async function main() {
         },
     });
 
-    if (atecScale) {
+    if (cRScale) {
 
         // Cria avaliações para cada usuário
         for (const user of users) {
             const evaluation = await prisma.avaliations.create({
                 data: {
                     client_fk: user.id,
-                    scale_fk: atecScale.id,
+                    scale_fk: cRScale.id,
                     professional_fk: professional.id,
                     title: `Primeira Avaliação de ${user.full_name}`,
                     created_at: new Date(),
@@ -96,7 +96,7 @@ async function main() {
             console.log(`Avaliação criada para o usuário ${user.full_name}`);
 
             // Adiciona respostas aleatórias para cada pergunta da primeira avaliação
-            for (const question of atecScale.questions) {
+            for (const question of cRScale.questions) {
                 const randomItem = question.itens[Math.floor(Math.random() * question.itens.length)];
                 if (randomItem) {
                     await prisma.answers.create({
@@ -111,7 +111,7 @@ async function main() {
             }
         }
     } else {
-        console.log('Escala "ATEC" não encontrada.');
+        console.log('Escala "cRScale" não encontrada.');
     }
 
     //Cria mais 3 avaliações além da primeira
@@ -134,7 +134,7 @@ async function main() {
                 const newEvaluation = await prisma.avaliations.create({
                     data: {
                         client_fk: user.id,
-                        scale_fk: atecScale ? atecScale.id : 0,
+                        scale_fk: cRScale ? cRScale.id : 0,
                         professional_fk: professional.id,
                         title: `Avaliação ${i} de ${user.full_name}`,
                         created_at: new Date(),
@@ -143,7 +143,7 @@ async function main() {
 
 
 
-                for (const question of atecScale?.questions || []) {
+                for (const question of cRScale?.questions || []) {
 
 
 
@@ -199,7 +199,7 @@ async function main() {
         }
     }
     console.log("--------------------------------------------------------");
-    console.log("ATEC inserido com sucesso");
+    console.log("Relatório de Crise inserido com sucesso");
     console.log("responsible: ", responsible.email + " - senhaSegura123");
     console.log("professional: ", professional.email + " - senhaSegura123");
     console.log("--------------------------------------------------------");

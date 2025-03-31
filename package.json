@@ -13,7 +13,9 @@
     "atec": "ts-node-dev --transpile-only --ignore-watch node_modules setup/atec.ts",
     "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts",
     "admin": "ts-node-dev --transpile-only --ignore-watch node_modules setup/admin/admin.ts",
-    "demo": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoAtec.ts"
+    "demoAtec": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoAtec.ts",
+    "demoCrisisReport": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoCrisisReport.ts",
+    "demoMChat": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoMChat.ts"
   },
   "repository": {
     "type": "git",
