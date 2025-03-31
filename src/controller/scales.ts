@@ -2,7 +2,13 @@ import { modelScalesDetailById, modelScalesList } from "../model/scales";
 import { Request, Response } from 'express';
 import { prisma } from "../utils/prisma";
 import { DatabaseError, DomainLogicError } from "../utils/erros";
-import { UUIDVersion } from "express-validator/lib/options";
+import { Prisma } from "@prisma/client";
+
+export interface AreaScore {
+    area: string;
+    pontuation: string;
+};
+
 export const controllerScalesList = async (req: Request, res: Response) => {
     const scalelist = await modelScalesList();
     res.status(200).json(scalelist);
@@ -58,7 +64,7 @@ export const controllerScalesSubmit = async (req: Request, res: Response) => {
                 create: answers.map((answer: any) => ({
                     question_fk: answer.question, // Ensure this is provided in the `answers` array
                     item_fk: answer.item, // Ensure this is provided in the `answers` array
-                  })),
+                })),
             }
         },
     })
@@ -68,3 +74,27 @@ export const controllerScalesSubmit = async (req: Request, res: Response) => {
     }
     res.json(test_submission).status(200)
 };
+
+export const getResultByLastAvaliationOfUser = async (req: Request, res: Response) => {
+    const { client } = req.params;
+    const result = await prisma.$queryRaw`
+  SELECT 
+    q."domain", 
+    SUM(i."score") AS total_score
+  FROM "answers" a
+  JOIN "itens" i ON i.id = a."item_fk"
+  JOIN "questions" q ON q.id = a."question_fk"
+  JOIN "avaliations" av ON av.id = a."avaliation_fk"
+  WHERE av."client_fk" = ${Prisma.sql`CAST(${client} AS UUID)`}  -- Cast explícito para UUID
+  AND av."created_at" = (
+    SELECT MAX("created_at") FROM "avaliations" WHERE "client_fk" = ${Prisma.sql`CAST(${client} AS UUID)`}  -- Cast explícito aqui também
+  )
+  GROUP BY q."domain";
+`;
+
+
+    if (!result) {
+        throw new DatabaseError("Could not retrieve data from the database");
+    }
+    res.json(result).status(200)
+}

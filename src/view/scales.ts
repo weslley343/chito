@@ -4,7 +4,7 @@ import { body, param, query } from 'express-validator';
 import { toBeImplemented } from '../controller/infra';
 import { resolver } from '../utils/routeAdapters';
 import validateRequest from '../utils/validateRequest';
-import { controllerScalesSubmit, controllerScalesList, controllerScalesDetail } from '../controller/scales';
+import { controllerScalesSubmit, controllerScalesList, controllerScalesDetail, getResultByLastAvaliationOfUser } from '../controller/scales';
 import { ProfessionalMiddleware } from '../utils/middlewares/Specialist';
 
 const scalesRoutes = Router()
@@ -29,12 +29,12 @@ scalesRoutes.post('/submit',
 
 
 scalesRoutes.get('/:id', resolver(controllerScalesDetail))//retorna o teste do id especificado com nome, perguntas e alternativas
-scalesRoutes.get('/resultoflasttest',
+scalesRoutes.get('/resultoflasttest/:client',
     [
-        query('client').isInt(),
+        param('client').isUUID(),
         validateRequest
     ],
-    resolver(toBeImplemented))//retorna o resultado da avaloação pelo id da avaliação
+    resolver(getResultByLastAvaliationOfUser))//retorna o resultado da avaloação pelo id da avaliação
 
 scalesRoutes.get('/progressbyarea',
     [
