@@ -9,6 +9,12 @@ export interface AreaScore {
     pontuation: string;
 };
 
+interface Evaluation {
+    id: number;
+    title: string;
+    created_at: string;
+    areas: AreaScore[];
+}
 export const controllerScalesList = async (req: Request, res: Response) => {
     const scalelist = await modelScalesList();
     res.status(200).json(scalelist);
@@ -98,3 +104,75 @@ export const getResultByLastAvaliationOfUser = async (req: Request, res: Respons
     }
     res.json(result).status(200)
 }
+
+export const listTestsByClientId = async (skip: number, take: number, client: number): Promise<Evaluation[]> => {
+    const result: { id: number; title: string; area: string; pontuation: string, created_at: string }[] = await prisma.$queryRaw`
+        SELECT 
+            avaliation.id, 
+            avaliation.title, 
+            question.area,
+            avaliation.created_at,
+            SUM(item.score) AS pontuation 
+        FROM answer 
+        INNER JOIN avaliation ON answer.avaliation = avaliation.id 
+        INNER JOIN question ON answer.question = question.id 
+        INNER JOIN item ON answer.item = item.id 
+        WHERE avaliation.client = ${client} 
+        GROUP BY question.area, avaliation.id, avaliation.created_at
+        ORDER BY avaliation.created_at desc
+        
+    `;
+    //OFFSET ${skip} LIMIT ${take};
+
+    if (!result || result.length === 0) {
+        throw new Error("Could not retrieve data from the database");
+    }
+
+    // Combine the scores by evaluation ID and area
+    // const combinedResult = result.reduce<{ [key: number]: Evaluation }>((acc, cur) => {
+    //     const { id, title, area, pontuation, created_at } = cur;
+    //     if (!acc[id]) {
+    //         acc[id] = {
+    //             id,
+    //             title,
+    //             created_at,
+    //             areas: []
+    //         };
+    //     }
+    //     acc[id].areas.push({ area, pontuation });
+    //     return acc;
+    // }, {});
+
+    // // Convert the object back to an array
+    // return Object.values(combinedResult);
+
+    // Combine the scores by evaluation ID
+    // Combine the scores by evaluation ID
+    const combinedResult: { [key: number]: Evaluation } = {};
+
+    for (const cur of result) {
+        const { id, title, area, pontuation, created_at } = cur;
+        if (!combinedResult[id]) {
+            combinedResult[id] = {
+                id,
+                title,
+                created_at,
+                areas: [{ area, pontuation }]
+            };
+        } else {
+            combinedResult[id].areas.push({ area, pontuation });
+        }
+    }
+
+    // Convert the object back to an array
+    const combinedArray = Object.values(combinedResult);
+
+    // Sort the combined array by created_at in descending order
+    combinedArray.sort((a, b) => {
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    });
+
+    return combinedArray;
+
+
+};
