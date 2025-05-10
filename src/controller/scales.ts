@@ -9,17 +9,25 @@ export interface AreaScore {
     pontuation: string;
 };
 
+interface AreaScoreAlt {
+    area: string;
+    score: number[];
+}
+
 interface Evaluation {
     id: number;
     title: string;
     created_at: string;
     areas: AreaScore[];
 }
+
+// Listar todas as escalas
 export const controllerScalesList = async (req: Request, res: Response) => {
     const scalelist = await modelScalesList();
     res.status(200).json(scalelist);
 };
 
+// Listar detalhes de uma escala (questionário e intens)
 export const controllerScalesDetail = async (req: Request, res: Response) => {
 
     const { id } = req.params;
@@ -31,7 +39,7 @@ export const controllerScalesDetail = async (req: Request, res: Response) => {
 //Vou deixar implementações da model aqui para formar a prova de conceito e mudo depois.
 // TODO: Transferir o código para as respectivas models
 
-//*criar demo
+//submeter o formulário ---------------------------------------------------------------------------------------------------------------------
 export const controllerScalesSubmit = async (req: Request, res: Response) => {
     //coleta o id do profissional
     //coleta o id do paciente
@@ -81,6 +89,7 @@ export const controllerScalesSubmit = async (req: Request, res: Response) => {
     res.json(test_submission).status(200)
 };
 
+//resultado da última avaliação do cliente -------------------------------------------------------------------------------------------------------------
 export const getResultByLastAvaliationOfUser = async (req: Request, res: Response) => {
     const { client } = req.params;
     const result = await prisma.$queryRaw`
@@ -105,74 +114,63 @@ export const getResultByLastAvaliationOfUser = async (req: Request, res: Respons
     res.json(result).status(200)
 }
 
-export const listTestsByClientId = async (skip: number, take: number, client: number): Promise<Evaluation[]> => {
-    const result: { id: number; title: string; area: string; pontuation: string, created_at: string }[] = await prisma.$queryRaw`
-        SELECT 
-            avaliation.id, 
-            avaliation.title, 
-            question.area,
-            avaliation.created_at,
-            SUM(item.score) AS pontuation 
-        FROM answer 
-        INNER JOIN avaliation ON answer.avaliation = avaliation.id 
-        INNER JOIN question ON answer.question = question.id 
-        INNER JOIN item ON answer.item = item.id 
-        WHERE avaliation.client = ${client} 
-        GROUP BY question.area, avaliation.id, avaliation.created_at
-        ORDER BY avaliation.created_at desc
-        
-    `;
-    //OFFSET ${skip} LIMIT ${take};
+// Listar evolução por área
+// export const listEvolutionbyArea = async (req: Request, res: Response) => {
+//     const { client } = req.params;
+//     const result = await prisma.$queryRaw`
+//   SELECT 
+//     q."domain", 
+//     i."score"
+//   FROM "answers" a
+//   JOIN "itens" i ON i.id = a."item_fk"
+//   JOIN "questions" q ON q.id = a."question_fk"
+//   JOIN "avaliations" av ON av.id = a."avaliation_fk"
+//   WHERE av."client_fk" = ${Prisma.sql`CAST(${client} AS UUID)`}  -- Cast explícito para UUID
+//   GROUP BY q."domain", i."score";
+// `;
 
-    if (!result || result.length === 0) {
+//     if (!result) {
+//         throw new DatabaseError("Could not retrieve data from the database");
+//     }
+//     res.json(result).status(200)
+// }
+
+export const listEvolutionbyArea = async (req: Request, res: Response) => {
+    const { client } = req.params;
+
+    const rawResult = await prisma.$queryRaw<{ domain: string; score_total: string }[]>`
+        SELECT 
+                avaliations.id, 
+                questions.domain, 
+                SUM(itens.score) AS score_total, 
+                avaliations.created_at 
+            FROM clients 
+            INNER JOIN avaliations ON avaliations.client_fk = clients.id 
+            INNER JOIN answers ON answers.avaliation_fk = avaliations.id 
+            INNER JOIN questions ON answers.question_fk = questions.id 
+            INNER JOIN itens ON answers.item_fk = itens.id 
+            WHERE clients.id = ${Prisma.sql`CAST(${client} AS UUID)`}
+            GROUP BY avaliations.id, questions.domain, avaliations.created_at 
+            ORDER BY avaliations.created_at ASC
+            --LIMIT 40;
+      `;
+
+    if (!rawResult || rawResult.length === 0) {
         throw new Error("Could not retrieve data from the database");
     }
 
-    // Combine the scores by evaluation ID and area
-    // const combinedResult = result.reduce<{ [key: number]: Evaluation }>((acc, cur) => {
-    //     const { id, title, area, pontuation, created_at } = cur;
-    //     if (!acc[id]) {
-    //         acc[id] = {
-    //             id,
-    //             title,
-    //             created_at,
-    //             areas: []
-    //         };
-    //     }
-    //     acc[id].areas.push({ area, pontuation });
-    //     return acc;
-    // }, {});
-
-    // // Convert the object back to an array
-    // return Object.values(combinedResult);
-
-    // Combine the scores by evaluation ID
-    // Combine the scores by evaluation ID
-    const combinedResult: { [key: number]: Evaluation } = {};
-
-    for (const cur of result) {
-        const { id, title, area, pontuation, created_at } = cur;
-        if (!combinedResult[id]) {
-            combinedResult[id] = {
-                id,
-                title,
-                created_at,
-                areas: [{ area, pontuation }]
+    // Transform the result into the desired format
+    const groupedResults = rawResult.reduce<{ [key: string]: AreaScoreAlt }>((acc, cur) => {
+        const { domain, score_total } = cur;
+        if (!acc[domain]) {
+            acc[domain] = {
+                area: domain,
+                score: []
             };
-        } else {
-            combinedResult[id].areas.push({ area, pontuation });
         }
-    }
+        acc[domain].score.push(parseFloat(score_total));
+        return acc;
+    }, {});
 
-    // Convert the object back to an array
-    const combinedArray = Object.values(combinedResult);
-
-    // Sort the combined array by created_at in descending order
-    combinedArray.sort((a, b) => {
-        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-    });
-
-    return combinedArray;
-
-
+    res.json(Object.values(groupedResults)).status(200)
 };

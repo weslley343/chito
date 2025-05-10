@@ -4,7 +4,7 @@ import { body, param, query } from 'express-validator';
 import { toBeImplemented } from '../controller/infra';
 import { resolver } from '../utils/routeAdapters';
 import validateRequest from '../utils/validateRequest';
-import { controllerScalesSubmit, controllerScalesList, controllerScalesDetail, getResultByLastAvaliationOfUser } from '../controller/scales';
+import { controllerScalesSubmit, controllerScalesList, controllerScalesDetail, getResultByLastAvaliationOfUser, listEvolutionbyArea } from '../controller/scales';
 import { ProfessionalMiddleware } from '../utils/middlewares/Specialist';
 
 const scalesRoutes = Router()
@@ -26,9 +26,18 @@ scalesRoutes.post('/submit',
         validateRequest
     ],
     resolver(controllerScalesSubmit)) //cadastra uma avaliação com suas respostas
+//------------------------------------
 
+scalesRoutes.get('/listevolutionbyarea/:client',
+    [
+        param('client').isUUID(),
+        validateRequest
+    ],
+    resolver(listEvolutionbyArea))
 
 scalesRoutes.get('/:id', resolver(controllerScalesDetail))//retorna o teste do id especificado com nome, perguntas e alternativas
+
+//---------------------------
 scalesRoutes.get('/resultoflasttest/:client',
     [
         param('client').isUUID(),
@@ -47,13 +56,6 @@ scalesRoutes.get('/listatectestsbyclientid',
     [
         query('skip').isInt(),
         query('take').isInt(),
-        query('client').isInt(),
-        validateRequest
-    ],
-    resolver(toBeImplemented))
-
-scalesRoutes.get('/listevolutionbyarea',
-    [
         query('client').isInt(),
         validateRequest
     ],
