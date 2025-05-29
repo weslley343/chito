@@ -12,6 +12,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 
+app.use('/static', express.static('assets'))
+
 app.use(cors())
 
 console.log(`chito - make & refine`);
