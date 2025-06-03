@@ -68,7 +68,7 @@ export const getResponsibleByClientId = async (
         responsibles: true, // inclui os dados do profissional relacionado
       },
     });
-  
+    console.log(clientResponsibles);
     // Extrai os dados do profissional do resultado
     const responsibles = clientResponsibles.map(
       (entry) => entry.responsibles

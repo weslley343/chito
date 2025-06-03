@@ -40,8 +40,8 @@ export const controllerProfessionalDelete = async (req: Request, res: Response) 
 export const controllerGetByClient = async (req: Request, res: Response) => {
 
     const id = res.locals.id
-    const { skip, take } = req.query;
-    const result = await getProfessionalByClientId(parseInt(skip as string), parseInt(take as string), id);
+    const { skip, take, client} = req.query;
+    const result = await getProfessionalByClientId(parseInt(skip as string), parseInt(take as string), client+"");
     res.json(result).status(200)
 
 }

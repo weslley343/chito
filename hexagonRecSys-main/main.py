@@ -87,11 +87,12 @@ def query_relation(client, avaliationid):
 
 @app.get("/atec/recommend")
 async def recommend_questions_route(avaliation: int, client: str = Query(..., description="UUID of the client")):
+    
     try:
         client_uuid = uuid.UUID(client)
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid client UUID format")
-
+    return {"message": "works"} 
     avaliationid = avaliation
 
     avaliation_df = query_relation(str(client_uuid), avaliationid)
@@ -100,7 +101,7 @@ async def recommend_questions_route(avaliation: int, client: str = Query(..., de
 
     df_primary_answers = fetch_answers(str(client_uuid), avaliationid)
     df_questions = fetch_questions()
-
+    
     pivot_table = df_primary_answers.pivot_table(index='avaliationid', columns='questionid', values='score', fill_value=0)
     matrix = pivot_table.values
     similarity_matrix = cosine_similarity(matrix)
@@ -114,14 +115,17 @@ async def recommend_questions_route(avaliation: int, client: str = Query(..., de
     clients_df = df_primary_answers[['avaliationid', 'client_fk']].drop_duplicates()
     clients_df = clients_df.set_index('avaliationid')
     similar_clients = clients_df.loc[similar_ids]
+    
 
     results_list = []
+    
     for similar_client in similar_clients.itertuples():
         evaluation_details = fetch_evaluation_details(similar_client.Index, similar_client.client_fk)
         if not evaluation_details.empty:
             results_list.append(evaluation_details)
 
     if results_list:
+        
         combined_results = pd.concat(results_list, ignore_index=True)
         pivot_table_2 = combined_results.pivot_table(index='avaliationid', columns='questionid', values='score', fill_value=0)
         mean_scores = pivot_table_2.mean()

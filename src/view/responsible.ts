@@ -52,6 +52,7 @@ responsibleRoutes.get('/byclient',
     [
         query('skip').isInt(),
         query('take').isInt(),
+        query('client').isUUID(),
         validateRequest
     ],
     resolver(controllerGetByClient))

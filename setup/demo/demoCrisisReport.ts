@@ -64,6 +64,16 @@ async function main() {
         });
     }
 
+    for (const user of users) {
+        await prisma.client_responsible.create({
+            data: {
+                client_fk: user.id,
+                responsible_fk: responsible.id,
+                created_at: new Date(),
+            },
+        });
+    }
+
     // Busca a escala "Crisis Report" e suas perguntas e itens
     const cRScale = await prisma.scales.findFirst({
         where: { name: 'Crisis Report' }, // Alterar aqui para mudar a escala
