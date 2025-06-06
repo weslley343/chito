@@ -22,42 +22,4 @@ atecRoutes.post('/submit',
     ],
     resolver(toBeImplemented)) //cadastra uma avaliação com suas respostas
 
-
-atecRoutes.get('/resultoflasttest',
-    [
-        query('client').isInt(),
-        validateRequest
-    ],
-    resolver(toBeImplemented))//retorna o resultado da avaloação pelo id da avaliação
-
-atecRoutes.get('/progressbyarea',
-    [
-        query('client').isInt(),
-        validateRequest
-    ],
-    resolver(toBeImplemented))//retorna o progresso por área nos últimos 7 testes
-
-atecRoutes.get('/listatectestsbyclientid',
-    [
-        query('skip').isInt(),
-        query('take').isInt(),
-        query('client').isInt(),
-        validateRequest
-    ],
-    resolver(toBeImplemented))
-
-atecRoutes.get('/listevolutionbyarea',
-    [
-        query('client').isInt(),
-        validateRequest
-    ],
-    resolver(toBeImplemented))
-
-atecRoutes.get('/answersbyavaliationid',
-    [
-        query('id').isInt(),
-        validateRequest
-    ],
-    resolver(toBeImplemented))
-
 export default atecRoutes

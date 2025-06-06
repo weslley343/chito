@@ -7,13 +7,10 @@ import validateRequest from '../utils/validateRequest';
 import { controllerScalesSubmit, controllerScalesList, controllerScalesDetail, getResultByLastAvaliationOfUser, listEvolutionbyArea } from '../controller/scales';
 import { ProfessionalMiddleware } from '../utils/middlewares/Specialist';
 
-const scalesRoutes = Router()
-
-scalesRoutes.get('/', resolver(controllerScalesList))//retorna o teste do id especificado com nome, perguntas e alternativas
+const avaliationRoutes = Router()
 
 
-
-scalesRoutes.post('/submit',
+avaliationRoutes.post('/submit',
     [
         body('scale').isInt(),
         body('title').isString(),
@@ -28,31 +25,22 @@ scalesRoutes.post('/submit',
     resolver(controllerScalesSubmit)) //cadastra uma avaliação com suas respostas
 //------------------------------------
 
-scalesRoutes.get('/listevolutionbyarea/:client',
+avaliationRoutes.get('/listevolutionbyarea/:client',// trocar por /progressbyarea
     [
         param('client').isUUID(),
         validateRequest
     ],
-    resolver(listEvolutionbyArea))
-
-scalesRoutes.get('/:id', resolver(controllerScalesDetail))//retorna o teste do id especificado com nome, perguntas e alternativas
+    resolver(listEvolutionbyArea))//retorna o progresso por área nos últimos 7 testes
 
 //---------------------------
-scalesRoutes.get('/resultoflasttest/:client',
+avaliationRoutes.get('/resultoflasttest/:client',
     [
         param('client').isUUID(),
         validateRequest
     ],
     resolver(getResultByLastAvaliationOfUser))//retorna o resultado da avaloação pelo id da avaliação
 
-scalesRoutes.get('/progressbyarea',
-    [
-        query('client').isInt(),
-        validateRequest
-    ],
-    resolver(toBeImplemented))//retorna o progresso por área nos últimos 7 testes
-
-scalesRoutes.get('/listatectestsbyclientid',
+avaliationRoutes.get('/listatectestsbyclientid',// trocar por /historic e adicionar o filtro do tipo de scale
     [
         query('skip').isInt(),
         query('take').isInt(),
@@ -61,11 +49,11 @@ scalesRoutes.get('/listatectestsbyclientid',
     ],
     resolver(toBeImplemented))
 
-scalesRoutes.get('/answersbyavaliationid',
+avaliationRoutes.get('/answersbyavaliationid',
     [
         query('id').isInt(),
         validateRequest
     ],
     resolver(toBeImplemented))
 
-export default scalesRoutes
+export default avaliationRoutes

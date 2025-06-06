@@ -9,30 +9,30 @@ import { ProfessionalMiddleware } from '../utils/middlewares/Specialist';
 
 const clientRoutes = Router();
 
-clientRoutes.post('/signin',
-    [
-        body('email').isEmail(),
-        body('password').isString(),
-        validateRequest],
-    resolver(toBeImplemented))
+// clientRoutes.post('/signin',
+//     [
+//         body('email').isEmail(),
+//         body('password').isString(),
+//         validateRequest],
+//     resolver(toBeImplemented))
 
-clientRoutes.get('/byspecialist',
-    [
-        query('skip').isInt(),
-        query('take').isInt(),
-        //SpecialistMiddleware,
-        validateRequest
-    ],
-    resolver(toBeImplemented))
+// clientRoutes.get('/byspecialist',
+//     [
+//         query('skip').isInt(),
+//         query('take').isInt(),
+//         //SpecialistMiddleware,
+//         validateRequest
+//     ],
+//     resolver(toBeImplemented))
 
-clientRoutes.get('/byguardian',
-    [
-        query('skip').isInt(),
-        query('take').isInt(),
-        //GuardianMiddleware,
-        validateRequest
-    ],
-    resolver(toBeImplemented))
+// clientRoutes.get('/byguardian',
+//     [
+//         query('skip').isInt(),
+//         query('take').isInt(),
+//         //GuardianMiddleware,
+//         validateRequest
+//     ],
+//     resolver(toBeImplemented))
 clientRoutes.get('/byprofessional',
     query('skip').isInt(),
     query('take').isInt(),
