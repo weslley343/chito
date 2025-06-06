@@ -27,7 +27,7 @@ CREATE TABLE "avaliations" (
 
 -- CreateTable
 CREATE TABLE "client_professional" (
-    "id" UUID NOT NULL DEFAULT uuid_generate_v1(),
+    "id" UUID NOT NULL,
     "client_fk" UUID NOT NULL,
     "professional_fk" UUID NOT NULL,
     "archived" BOOLEAN DEFAULT false,
@@ -38,7 +38,7 @@ CREATE TABLE "client_professional" (
 
 -- CreateTable
 CREATE TABLE "client_responsible" (
-    "id" UUID NOT NULL DEFAULT uuid_generate_v1(),
+    "id" UUID NOT NULL,
     "client_fk" UUID NOT NULL,
     "responsible_fk" UUID NOT NULL,
     "archived" BOOLEAN DEFAULT false,
@@ -49,7 +49,7 @@ CREATE TABLE "client_responsible" (
 
 -- CreateTable
 CREATE TABLE "clients" (
-    "id" UUID NOT NULL DEFAULT uuid_generate_v1(),
+    "id" UUID NOT NULL,
     "image_url" VARCHAR(100),
     "identifier" VARCHAR(30) NOT NULL,
     "code" VARCHAR(7),
@@ -77,7 +77,7 @@ CREATE TABLE "itens" (
 
 -- CreateTable
 CREATE TABLE "professionals" (
-    "id" UUID NOT NULL DEFAULT uuid_generate_v1(),
+    "id" UUID NOT NULL,
     "identifier" VARCHAR(30) NOT NULL,
     "full_name" VARCHAR NOT NULL,
     "image_url" VARCHAR,
@@ -97,6 +97,7 @@ CREATE TABLE "questions" (
     "content" VARCHAR NOT NULL,
     "scale_fk" INTEGER NOT NULL,
     "domain" VARCHAR NOT NULL,
+    "color" TEXT DEFAULT '#FFFFFF',
     "created_at" TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "questions_pkey" PRIMARY KEY ("id")
@@ -104,7 +105,7 @@ CREATE TABLE "questions" (
 
 -- CreateTable
 CREATE TABLE "responsibles" (
-    "id" UUID NOT NULL DEFAULT uuid_generate_v1(),
+    "id" UUID NOT NULL,
     "identifier" VARCHAR(30) NOT NULL,
     "full_name" VARCHAR NOT NULL,
     "image_url" VARCHAR,
@@ -122,6 +123,7 @@ CREATE TABLE "scales" (
     "name" VARCHAR(100) NOT NULL,
     "image_url" VARCHAR,
     "description" VARCHAR(255) NOT NULL,
+    "color" TEXT DEFAULT '#FFFFFF',
     "created_at" TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "scales_pkey" PRIMARY KEY ("id")

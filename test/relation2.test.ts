@@ -208,6 +208,9 @@ describe('Testando Rotas de Consulta de Relações', () => {
       .query({ skip: 0, take: 10 });
 
     expect(response.status).toBe(200);
+    console.log("-----------------------------------------------------------------------------------")
+    console.log(response.body)
+    console.log("-----------------------------------------------------------------------------------")
     expect(Array.isArray(response.body)).toBe(true);
     //--------------------a parte acima da erro
     //console.log(response.body)
