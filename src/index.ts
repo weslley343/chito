@@ -14,6 +14,7 @@ const port = process.env.PORT || 3000;
 
 
 app.use('/static', express.static('assets'))
+app.use('/static', express.static('public'))
 
 app.use(cors())
 
@@ -28,7 +29,7 @@ app.use("/relation", relationRoutes)
 app.use("/avaliation", avaliationRoutes)
 app.use("/scale", ScaleRoutes)
 
-app.use('/static', express.static('public'))
+
 
 app.get('/', (req: Request, res: Response) => {
     res.json({ "msg": "hello BASE" })

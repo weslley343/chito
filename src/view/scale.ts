@@ -4,7 +4,7 @@ import { body, param, query } from 'express-validator';
 import { toBeImplemented } from '../controller/infra';
 import { resolver } from '../utils/routeAdapters';
 import validateRequest from '../utils/validateRequest';
-import { controllerScalesSubmit, controllerScalesList, controllerScalesDetail, getResultByLastAvaliationOfUser, listEvolutionbyArea } from '../controller/scales';
+import { controllerScalesSubmit, controllerScalesList, controllerScalesDetail, getResultByLastAvaliationOfUser } from '../controller/scales';
 import { ProfessionalMiddleware } from '../utils/middlewares/Specialist';
 
 const ScaleRoutes = Router()

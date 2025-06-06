@@ -135,42 +135,6 @@ export const getResultByLastAvaliationOfUser = async (req: Request, res: Respons
 //     res.json(result).status(200)
 // }
 
-export const listEvolutionbyArea = async (req: Request, res: Response) => {
-    const { client } = req.params;
+// FUTURE:
+//feito no controller para prova de conceito, mas a lógica é complexa e deve ser transferida para a model no futuro
 
-    const rawResult = await prisma.$queryRaw<{ domain: string; score_total: string }[]>`
-        SELECT 
-                avaliations.id, 
-                questions.domain, 
-                SUM(itens.score) AS score_total, 
-                avaliations.created_at 
-            FROM clients 
-            INNER JOIN avaliations ON avaliations.client_fk = clients.id 
-            INNER JOIN answers ON answers.avaliation_fk = avaliations.id 
-            INNER JOIN questions ON answers.question_fk = questions.id 
-            INNER JOIN itens ON answers.item_fk = itens.id 
-            WHERE clients.id = ${Prisma.sql`CAST(${client} AS UUID)`}
-            GROUP BY avaliations.id, questions.domain, avaliations.created_at 
-            ORDER BY avaliations.created_at ASC
-            --LIMIT 40;
-      `;
-
-    if (!rawResult || rawResult.length === 0) {
-        throw new Error("Could not retrieve data from the database");
-    }
-
-    // Transform the result into the desired format
-    const groupedResults = rawResult.reduce<{ [key: string]: AreaScoreAlt }>((acc, cur) => {
-        const { domain, score_total } = cur;
-        if (!acc[domain]) {
-            acc[domain] = {
-                area: domain,
-                score: []
-            };
-        }
-        acc[domain].score.push(parseFloat(score_total));
-        return acc;
-    }, {});
-
-    res.json(Object.values(groupedResults)).status(200)
-};

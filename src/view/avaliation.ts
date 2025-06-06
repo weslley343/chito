@@ -4,10 +4,23 @@ import { body, param, query } from 'express-validator';
 import { toBeImplemented } from '../controller/infra';
 import { resolver } from '../utils/routeAdapters';
 import validateRequest from '../utils/validateRequest';
-import { controllerScalesSubmit, controllerScalesList, controllerScalesDetail, getResultByLastAvaliationOfUser, listEvolutionbyArea } from '../controller/scales';
+import { controllerScalesSubmit, controllerScalesList, controllerScalesDetail, getResultByLastAvaliationOfUser } from '../controller/scales';
 import { ProfessionalMiddleware } from '../utils/middlewares/Specialist';
+import { DetailAvaliationById, listAvaliationsByClientIdAndScaleId, listEvolutionByDomain } from '../controller/avaliations';
 
 const avaliationRoutes = Router()
+
+avaliationRoutes.get('/historic/:client/:scale',// trocar por /historic e adicionar o filtro do tipo de scale
+    [
+        // query('skip').isInt(),
+        // query('take').isInt(),
+        param('client').isUUID(),
+        param('scale').isInt(),
+        validateRequest
+    ],
+    // resolver(toBeImplemented)
+    resolver(listAvaliationsByClientIdAndScaleId)
+)
 
 
 avaliationRoutes.post('/submit',
@@ -23,16 +36,17 @@ avaliationRoutes.post('/submit',
         validateRequest
     ],
     resolver(controllerScalesSubmit)) //cadastra uma avaliação com suas respostas
-//------------------------------------
+
+//------------------------------------ IMPLM
 
 avaliationRoutes.get('/listevolutionbyarea/:client',// trocar por /progressbyarea
     [
         param('client').isUUID(),
         validateRequest
     ],
-    resolver(listEvolutionbyArea))//retorna o progresso por área nos últimos 7 testes
+    resolver(listEvolutionByDomain))//retorna o progresso por área nos últimos 7 testes
 
-//---------------------------
+//--------------------------- IMPLM
 avaliationRoutes.get('/resultoflasttest/:client',
     [
         param('client').isUUID(),
@@ -40,20 +54,12 @@ avaliationRoutes.get('/resultoflasttest/:client',
     ],
     resolver(getResultByLastAvaliationOfUser))//retorna o resultado da avaloação pelo id da avaliação
 
-avaliationRoutes.get('/listatectestsbyclientid',// trocar por /historic e adicionar o filtro do tipo de scale
-    [
-        query('skip').isInt(),
-        query('take').isInt(),
-        query('client').isInt(),
-        validateRequest
-    ],
-    resolver(toBeImplemented))
 
-avaliationRoutes.get('/answersbyavaliationid',
+avaliationRoutes.get('/:id',
     [
-        query('id').isInt(),
+        param('id').isInt(),
         validateRequest
     ],
-    resolver(toBeImplemented))
+    resolver(DetailAvaliationById))
 
 export default avaliationRoutes
