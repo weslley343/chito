@@ -17,83 +17,80 @@ app = FastAPI()
 class QueryParams(BaseModel):
     client: int
     avaliationid: int
-    
-def query_relation(client, avaliationid, scale_id):
-    query = """
-    SELECT * FROM avaliations
-    WHERE client_fk = :client AND id = :avaliationid AND scale_fk = :scale_id;
-    """
-    with engine.connect() as conn:
-        result = conn.execute(text(query), {'client': client, 'avaliationid': avaliationid, 'scale_id': scale_id})
-        return pd.DataFrame(result.fetchall(), columns=result.keys())
 
-def fetch_evaluation_details(avaliation_id, client, scale_id):
-    query = """
-    SELECT
-        avaliations.id AS avaliationid,
-        avaliations.client_fk,
-        questions.id AS questionid,
-        itens.score,
-        avaliations.created_at AS timestamp
-    FROM avaliations
-    INNER JOIN answers ON avaliations.id = answers.avaliation_fk
-    INNER JOIN itens ON itens.id = answers.item_fk
-    INNER JOIN questions ON questions.id = answers.question_fk
-    WHERE avaliations.id > :avaliation_id
-      AND avaliations.client_fk = :client
-      AND questions.scale_fk = :scale_id;
-    """
-    with engine.connect() as conn:
-        result = conn.execute(text(query), {'avaliation_id': avaliation_id, 'client': client, 'scale_id': scale_id})
-        return pd.DataFrame(result.fetchall(), columns=result.keys())
-
-
-def fetch_questions(scale_id):
-    query = """
-    SELECT id AS questionid, item_order, content, domain
-    FROM questions
-    WHERE scale_fk = :scale_id;
-    """
-    with engine.connect() as conn:
-        result = conn.execute(text(query), {'scale_id': scale_id})
-        return pd.DataFrame(result.fetchall(), columns=result.keys())
-
-
-def fetch_answers(client, avaliationid, scale_id):
+# retorna avaliationid, client, questionid, score, created_at []
+def fetch_answers(client, avaliationid):
     query = """
     WITH answers_cte AS (
         SELECT
-            avaliations.id AS avaliationid,
-            avaliations.client_fk,
-            questions.id AS questionid,
-            itens.score,
-            avaliations.created_at AS timestamp
-        FROM avaliations
-        INNER JOIN answers ON avaliations.id = answers.avaliation_fk
-        INNER JOIN itens ON itens.id = answers.item_fk
-        INNER JOIN questions ON questions.id = answers.question_fk
-        WHERE questions.scale_fk = :scale_id
+            a.id AS avaliationid,
+            a.client_fk,
+            q.id AS questionid,
+            i.score,
+            a.created_at AS timestamp
+        FROM avaliations a
+        INNER JOIN answers ans ON a.id = ans.avaliation_fk
+        INNER JOIN itens i ON i.id = ans.item_fk
+        INNER JOIN questions q ON q.id = ans.question_fk
     )
     SELECT * FROM answers_cte
     WHERE client_fk != :client OR avaliationid = :avaliationid;
     """
-    params = {'client': client, 'avaliationid': avaliationid, 'scale_id': scale_id}
-    with engine.connect() as conn:
-        result = conn.execute(text(query), params)
+    params = {'client': client, 'avaliationid': avaliationid}
+    with engine.connect() as connection:
+        result = connection.execute(text(query), params)
         return pd.DataFrame(result.fetchall(), columns=result.keys())
 
+def fetch_questions():
+    query = """
+    SELECT q.id AS questionid, q.item_order, q.content, q.domain
+    FROM questions q;
+    """
+    with engine.connect() as connection:
+        result = connection.execute(text(query))
+        return pd.DataFrame(result.fetchall(), columns=result.keys())
 
-@app.get("/recommend")
-async def recommend_questions_route(avaliation: int, client: str, scale: int):
+def fetch_evaluation_details(avaliation_id, client):
+    query = """
+    SELECT
+        a.id AS avaliationid,
+        a.client_fk,
+        q.id AS questionid,
+        i.score,
+        a.created_at AS timestamp
+    FROM avaliations a
+    INNER JOIN answers ans ON a.id = ans.avaliation_fk
+    INNER JOIN itens i ON i.id = ans.item_fk
+    INNER JOIN questions q ON q.id = ans.question_fk
+    WHERE a.id > :avaliation_id AND a.client_fk = :client
+    LIMIT 77;
+    """ #77 provavelmente deve mudar para comportar outros testes pois 77 [é o número de perguntas para a ATEC]
+    params = {'client': client, 'avaliation_id': avaliation_id}
+    with engine.connect() as connection:
+        result = connection.execute(text(query), params)
+        return pd.DataFrame(result.fetchall(), columns=result.keys())
+
+#verifica a relação entre o client e a avaliação -> Retorna (title, notes, client_fk, professional_fk, scale_fk, created_at)
+def query_relation(client, avaliationid):
+    query = """
+    SELECT * FROM avaliations
+    WHERE client_fk = :client AND id = :avaliationid;
+    """
+    params = {'client': client, 'avaliationid': avaliationid}
+    with engine.connect() as connection:
+        result = connection.execute(text(query), params)
+        return pd.DataFrame(result.fetchall(), columns=result.keys())
+
+@app.get("/sugest")
+async def recommend_questions_route(avaliation: int, client: str):
     avaliationid = avaliation
 
-    # Verifica se a avaliação existe e pertence ao cliente e escala
-    avaliation = query_relation(client, avaliationid, scale)
+    avaliation = query_relation(client, avaliationid) # Verifica a relação entre o client e a avaliação
     if avaliation.empty:
         raise HTTPException(status_code=404, detail="Avaliação não encontrada")
 
-    df_primary_answers = fetch_answers(client=client, avaliationid=avaliationid, scale_id=scale)
-    df_questions = fetch_questions(scale_id=scale)
+    df_primary_answers = fetch_answers(client=client, avaliationid=avaliationid) # retorna as respostas de um usuário
+    df_questions = fetch_questions()
 
     pivot_table = df_primary_answers.pivot_table(index='avaliationid', columns='questionid', values='score', fill_value=0)
     matrix = pivot_table.values
@@ -111,7 +108,7 @@ async def recommend_questions_route(avaliation: int, client: str, scale: int):
 
     results_list = []
     for similar_client in similar_clients.itertuples():
-        evaluation_details = fetch_evaluation_details(similar_client.Index, similar_client.client_fk, scale)
+        evaluation_details = fetch_evaluation_details(similar_client.Index, similar_client.client_fk)
         if not evaluation_details.empty:
             results_list.append(evaluation_details)
 
