@@ -608,6 +608,7 @@ async function insertCrisisReport() {
                 item_order: question.item_order,
                 content: question.content,
                 domain: question.domain,
+                color: question.color,
                 scale_fk: scale.id, // Relacionar com a escala "Relatório de Crise"
             },
         });
