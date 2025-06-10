@@ -34,6 +34,8 @@ echo "Running scales script..."
 npm run demoAtec || { echo "npm run demoAtec failed"; exit 1; }
 npm run demoCrisisReport || { echo "npm run demoCrisisReport failed"; exit 1; }
 npm run demoMChat || { echo "npm run demoMChat failed"; exit 1; }
+npm run demoAutismBehaviorChecklist || { echo "npm run demoAutismBehaviorChecklist failed"; exit 1; }
+
 
 # Stop the Docker containers
 echo "Stopping Docker containers..."

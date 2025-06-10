@@ -7,6 +7,7 @@
     "test": "jest",
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts",
     "crisis_report": "ts-node-dev --transpile-only --ignore-watch node_modules setup/crisisReport.ts",
+    "autism_behavior_checklist": "ts-node-dev --transpile-only --ignore-watch node_modules setup/AutismBehaviorChecklist.ts",
     "uuid_setup": "ts-node-dev --transpile-only --ignore-watch node_modules setup/uuid.ts",
     "scales": "ts-node-dev --transpile-only --ignore-watch node_modules setup/scales.ts",
     "m_chat": "ts-node-dev --transpile-only --ignore-watch node_modules setup/mchat.ts",
@@ -15,7 +16,8 @@
     "admin": "ts-node-dev --transpile-only --ignore-watch node_modules setup/admin/admin.ts",
     "demoAtec": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoAtec.ts",
     "demoCrisisReport": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoCrisisReport.ts",
-    "demoMChat": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoMChat.ts"
+    "demoMChat": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoMChat.ts",
+    "demoAutismBehaviorChecklist": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoAutismBehaviorChecklist.ts"
   },
   "repository": {
     "type": "git",

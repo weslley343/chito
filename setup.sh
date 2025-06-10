@@ -53,6 +53,8 @@ npm run crisis_report || { echo "npm run crisis_report failed"; exit 1; }
 
 npm run atec || { echo "npm run atec failed"; exit 1; }
 
+npm run autism_behavior_checklist || { echo "npm run atec failed"; exit 1; }
+
 # Stop the Docker containers
 echo "Stopping Docker containers..."
 docker compose -f compose/postgres/docker-compose.yml stop || { echo "Docker compose stop failed"; exit 1; }
