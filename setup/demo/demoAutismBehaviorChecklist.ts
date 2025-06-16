@@ -40,12 +40,14 @@ async function main() {
 
     const users = [];
     // Cria 3 usuários
-    for (let i = 1; i <= 3; i++) {//alterar o 3 para mudar a quantidade de usuários criados. OBS: Max de 30 usuários
+    for (let i = 1; i <= 25; i++) {//alterar o 3 para mudar a quantidade de usuários criados. OBS: Max de 30 usuários
         const user = await prisma.clients.create({
             data: {
                 identifier: `user${i}-${names[i]}`,
                 full_name: `${names[i]}${i} Bartolomeu Silva`,
                 birthdate: new Date(2000, 0, i),
+                code: `ABC${i}`,
+                image_url: `/static/client.png`,
                 gender: i % 2 === 0 ? 'female' : 'male',
                 description: `Descrição do usuário ${names[i]}`,
                 created_at: new Date(),

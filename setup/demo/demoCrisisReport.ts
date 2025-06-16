@@ -46,6 +46,8 @@ async function main() {
                 identifier: `user${i}-${names[i]}`,
                 full_name: `${names[i]}${i} Marcelin Silva`,
                 birthdate: new Date(2000, 0, i),
+                code: `CR${i}`,
+                image_url: `/static/clientwoman.png`,
                 gender: i % 2 === 0 ? 'female' : 'male',
                 description: `Descrição do usuário ${names[i]}`,
                 created_at: new Date(),
