@@ -45,6 +45,8 @@ export const controllerScalesSubmit = async (req: Request, res: Response) => {
     //coleta o id do paciente
     //verificar relação entre os dois
     const { client, title, notes, answers, scale } = req.body
+    console.log("answers", answers);
+    console.log(answers.length);
     const id: string = res.locals.id
     const relation = await prisma.client_professional.findMany({ where: { professional_fk: id, client_fk: client } })
     if (!relation) {
@@ -86,6 +88,7 @@ export const controllerScalesSubmit = async (req: Request, res: Response) => {
         throw new DatabaseError("falha ao submeter o formulário");
 
     }
+    console.log("test_submission", test_submission);
     res.json(test_submission).status(200)
 };
 
@@ -94,7 +97,8 @@ export const getResultByLastAvaliationOfUser = async (req: Request, res: Respons
     const { client } = req.params;
     const result = await prisma.$queryRaw`
   SELECT 
-    q."domain", 
+    q."domain",
+    q."color",
     SUM(i."score") AS total_score
   FROM "answers" a
   JOIN "itens" i ON i.id = a."item_fk"
@@ -104,7 +108,7 @@ export const getResultByLastAvaliationOfUser = async (req: Request, res: Respons
   AND av."created_at" = (
     SELECT MAX("created_at") FROM "avaliations" WHERE "client_fk" = ${Prisma.sql`CAST(${client} AS UUID)`}  -- Cast explícito aqui também
   )
-  GROUP BY q."domain";
+  GROUP BY q."domain", q."color";
 `;
 
 

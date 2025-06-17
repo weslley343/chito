@@ -101,7 +101,7 @@ export const listAvaliationsByClientIdAndScaleId = async (req: Request, res: Res
 export const listEvolutionByDomain = async (req: Request, res: Response) => {
 
     const {
-        client
+        client, scale
     } = req.params;
 
     const result: RawResult[] = await prisma.$queryRaw`
@@ -116,7 +116,7 @@ export const listEvolutionByDomain = async (req: Request, res: Response) => {
             INNER JOIN answers ON answers.avaliation_fk  = avaliations.id 
             INNER JOIN questions ON answers.question_fk  = questions.id 
             INNER JOIN itens ON answers.item_fk  = itens.id 
-            WHERE clients.id = ${Prisma.sql`${client}::uuid`}
+            WHERE clients.id = ${Prisma.sql`${client}::uuid`} and avaliations.scale_fk = ${Number(scale)}
             GROUP BY avaliations.id, questions.domain, avaliations.created_at, questions.color
             ORDER BY avaliations.created_at ASC
             --LIMIT 40;

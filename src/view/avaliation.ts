@@ -39,9 +39,10 @@ avaliationRoutes.post('/submit',
 
 //------------------------------------ IMPLM
 
-avaliationRoutes.get('/listevolutionbyarea/:client',// trocar por /progressbyarea
+avaliationRoutes.get('/listevolutionbyarea/:client/:scale',// trocar por /progressbyarea
     [
         param('client').isUUID(),
+        param('scale').isInt(),
         validateRequest
     ],
     resolver(listEvolutionByDomain))//retorna o progresso por área nos últimos 7 testes
