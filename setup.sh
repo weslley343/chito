@@ -55,6 +55,21 @@ npm run atec || { echo "npm run atec failed"; exit 1; }
 
 npm run autism_behavior_checklist || { echo "npm run atec failed"; exit 1; }
 
+# Run the hexagonRecSys setup
+echo "Seting up RecSys..."
+
+
+
+cd hexagonRecSys-main/ || { echo "open recsys_setup failed"; exit 1; }
+
+python3 -m venv .venv || { echo "venv recsys_setup failed"; exit 1; }
+
+pip install -r requirements.txt || { echo "pip install recsys_setup failed"; exit 1; }
+
+fastapi dev main.py || { echo "fastapi dev recsys_setup failed"; exit 1; }
+
+cd .. || { echo "return to root failed"; exit 1; }
+
 # Stop the Docker containers
 echo "Stopping Docker containers..."
 docker compose -f compose/postgres/docker-compose.yml stop || { echo "Docker compose stop failed"; exit 1; }
