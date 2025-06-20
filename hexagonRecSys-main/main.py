@@ -50,7 +50,7 @@ def fetch_evaluation_details(avaliation_id, client, scale_id):
 
 def fetch_questions(scale_id):
     query = """
-    SELECT id AS questionid, item_order, content, domain
+    SELECT id AS questionid, item_order, content, domain, color
     FROM questions
     WHERE scale_fk = :scale_id;
     """
@@ -126,6 +126,7 @@ async def recommend_questions_route(avaliation: int, client: str, scale: int):
         filtered_differences = differences[differences < 0]
         sorted_filtered_differences = filtered_differences.sort_values(ascending=True)
         filtered_questions = df_questions[df_questions['questionid'].isin(sorted_filtered_differences.index)]
-        return {"filtered_questions": filtered_questions.to_dict(orient='records')}
+        # Ensure 'color' is included in the returned fields
+        return {"filtered_questions": filtered_questions[['questionid', 'item_order', 'content', 'domain', 'color']].to_dict(orient='records')}
     else:
         return {"message": "Nenhum dado retornado para as avaliações similares."}
