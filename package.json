@@ -18,6 +18,7 @@
     "demoAtec": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoAtec.ts",
     "demoCrisisReport": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoCrisisReport.ts",
     "demoMChat": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoMChat.ts",
+    "demoCars": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoCars.ts",
     "demoAutismBehaviorChecklist": "ts-node-dev --transpile-only --ignore-watch node_modules setup/demo/demoAutismBehaviorChecklist.ts"
     
   },
