@@ -17,6 +17,7 @@ async function insertCrisisReport() {
         {
             item_order: 1,
             content: "RELAÇÕES PESSOAIS",
+            color: "#1f77b4",
             domain: "Relações Pessoais",
             items: [
                 {
@@ -39,6 +40,7 @@ async function insertCrisisReport() {
         {
             item_order: 2,
             content: "IMITAÇÃO",
+             color: "#ff7f0e",
             domain: "Imitação",
             items: [
                 { item_order: 1, content: `1- Imitação adequada: A criança pode imitar sons, palavras e movimentos, os quais são adequados para o seu nível de habilidade.`, score: 1.0 },
@@ -53,6 +55,7 @@ async function insertCrisisReport() {
         {
             item_order: 3,
             content: "RESPOSTA EMOCIONAL",
+             color: "#2ca02c",
             domain: "Resposta Emocional",
             items: [
                 { item_order: 1, content: `1 - Resposta emocional adequada à situação e à idade.`, score: 1.0 },
@@ -67,6 +70,7 @@ async function insertCrisisReport() {
         {
             item_order: 4,
             content: "USO CORPORAL",
+            color: "#d62728",
             domain: "Uso Corporal",
             items: [
                 { item_order: 1, content: `1 - Uso corporal adequado à idade.`, score: 1.0 },
@@ -81,6 +85,7 @@ async function insertCrisisReport() {
         {
             item_order: 5,
             content: "USO DE OBJETOS",
+            color: "#9467bd",
             domain: "Uso de Objetos",
             items: [
                 { item_order: 1, content: `1 - Uso e interesse adequados por brinquedos e objetos.`, score: 1.0 },
@@ -95,6 +100,7 @@ async function insertCrisisReport() {
         {
             item_order: 6,
             content: "RESPOSTA A MUDANÇAS",
+            color: "#8c564b",
             domain: "Resposta a Mudanças",
             items: [
                 { item_order: 1, content: `1 - Resposta adequada à idade.`, score: 1.0 },
@@ -109,6 +115,7 @@ async function insertCrisisReport() {
         {
             item_order: 7,
             content: "RESPOSTA VISUAL",
+            color: "#e377c2",
             domain: "Resposta Visual",
             items: [
                 { item_order: 1, content: `1 - Resposta visual adequada à idade.`, score: 1.0 },
@@ -123,6 +130,7 @@ async function insertCrisisReport() {
         {
             item_order: 8,
             content: "RESPOSTA AUDITIVA",
+            color: "#7f7f7f",
             domain: "Resposta Auditiva",
             items: [
                 { item_order: 1, content: `1 - Respostas auditivas adequadas à idade.`, score: 1.0 },
@@ -137,6 +145,7 @@ async function insertCrisisReport() {
         {
             item_order: 9,
             content: "RESPOSTA E USO DO PALADAR, OLFATO E TATO",
+            color: "#bcbd22",
             domain: "Sensorial",
             items: [
                 { item_order: 1, content: `1 - Uso e resposta normais para paladar, olfato e tato.`, score: 1.0 },
@@ -151,6 +160,7 @@ async function insertCrisisReport() {
         {
             item_order: 10,
             content: "MEDO OU NERVOSISMO",
+            color: "#17becf",
             domain: "Medo ou Nervosismo",
             items: [
                 { item_order: 1, content: `1 - Medo ou nervosismo normais para a idade.`, score: 1.0 },
@@ -165,6 +175,7 @@ async function insertCrisisReport() {
         {
             item_order: 11,
             content: "COMUNICAÇÃO VERBAL",
+            color: "#f781bf",
             domain: "Comunicação Verbal",
             items: [
                 { item_order: 1, content: `1 - Comunicação verbal normal, adequada à idade e à situação.`, score: 1.0 },
@@ -179,6 +190,7 @@ async function insertCrisisReport() {
         {
             item_order: 12,
             content: "COMUNICAÇÃO NÃO VERBAL",
+            color: "#a65628",
             domain: "Comunicação Não Verbal",
             items: [
                 { item_order: 1, content: `1 - Uso normal da comunicação não-verbal, adequado à idade e situação.`, score: 1.0 },
@@ -194,6 +206,7 @@ async function insertCrisisReport() {
             item_order: 13,
             content: "NÍVEL DE ATIVIDADE",
             domain: "Atividade",
+            color: "#999999",
             items: [
                 { item_order: 1, content: `1 - Nível de atividade normal para a idade e circunstâncias.`, score: 1.0 },
                 { item_order: 2, content: `1.5`, score: 1.5 },
@@ -207,6 +220,7 @@ async function insertCrisisReport() {
         {
             item_order: 14,
             content: "NÍVEL E CONSISTÊNCIA DA RESPOSTA INTELECTUAL",
+            color: "#66c2a5",
             domain: "Resposta Intelectual",
             items: [
                 { item_order: 1, content: `1 - Inteligência normal e consistente em várias áreas.`, score: 1.0 },
@@ -221,6 +235,7 @@ async function insertCrisisReport() {
         {
             item_order: 15,
             content: "IMPRESSÕES GERAIS",
+            color:  "#fc8d62",
             domain: "Impressão Clínica",
             items: [
                 { item_order: 1, content: `1 - Sem autismo: nenhum dos sintomas característicos do autismo está presente.`, score: 1.0 },
