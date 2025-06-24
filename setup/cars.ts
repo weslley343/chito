@@ -474,6 +474,7 @@ async function insertCrisisReport() {
         const createdQuestion = await prisma.questions.create({
             data: {
                 item_order: question.item_order,
+                color: question.color,
                 content: question.content,
                 domain: question.domain,
                 scale_fk: scale.id, // Relacionar com a escala "Relatório de Crise"
@@ -514,4 +515,3 @@ insertCrisisReport()
         await prisma.$disconnect();
     });
 
-    
