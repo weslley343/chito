@@ -7,9 +7,9 @@ async function main() {
 
     const responsible = await prisma.responsibles.create({
         data: {
-            identifier: 'Holly737',
-            full_name: 'Holly Hill Bradbury',
-            email: 'holly.h@acompanhar.com',
+            identifier: 'beatriz737',
+            full_name: 'Beatriz Hill Bradbury',
+            email: 'beatriz@acompanhar.com',
             password: await encryptPassword('senhaSegura123'),
             description: 'Responsável pelo acompanhamento.',
             created_at: new Date(),
@@ -18,9 +18,9 @@ async function main() {
 
     const professional = await prisma.professionals.create({
         data: {
-            identifier: 'LionelVI',
-            full_name: 'Lionel Vieira Casteliano',
-            email: 'lione@acompanhar.com',
+            identifier: 'BrunoCastro',
+            full_name: 'Bruno Castro Casteliano',
+            email: 'bruno@acompanhar.com',
             password: await encryptPassword('senhaSegura123'),
             specialty: 'Psicólogo',
             description: 'Profissional especializado em psicologia infantil.',
@@ -30,21 +30,21 @@ async function main() {
 
     // Insere 30 usuários no banco de dados
     const names = [
-        "Beatriz", "Bruno", "Bianca", "Bernardo", "Bárbara", "Breno",
-        "Brenda", "Benício", "Bela", "Bento", "Brisa", "Breno",
+        "Beatriz", "Bruno", "Bernardo",
+         "Benício", "Brisa",
         "Berenice", "Baltazar", "Brenda", "Belmiro", "Berta", "Bóris",
-        "Bruna", "Bonifácio", "Bia", "Benício", "Brisa", "Benício",
-        "Bárbara", "Bartolomeu", "Bela", "Bento", "Bianca", "Breno"
+        "Bruna", "Bonifácio", "Bia",
+        "Bárbara", "Bartolomeu", "Bela", "Bento", "Bianca", "Breno", "Brad"
     ];
 
 
     const users = [];
     // Cria 3 usuários
-    for (let i = 1; i <= 25; i++) {//alterar o 3 para mudar a quantidade de usuários criados. OBS: Max de 30 usuários
+    for (let i = 1; i <= 14; i++) {//alterar o 3 para mudar a quantidade de usuários criados. OBS: Max de 30 usuários
         const user = await prisma.clients.create({
             data: {
-                identifier: `user${i}-${names[i]}`,
-                full_name: `${names[i]}${i} Bartolomeu Silva`,
+                identifier: `${names[i]}`, //user${i}-
+                full_name: `${names[i]} Bartolomeu Silva`,// ${i} 
                 birthdate: new Date(2000, 0, i),
                 code: `ABC${i}`,
                 image_url: `/static/client.png`,
@@ -127,7 +127,7 @@ async function main() {
 
     //Cria mais 3 avaliações além da primeira
     for (const user of users) {
-        for (let i = 2; i <= 4; i++) { //editar 4 para alterar o número de avaliações
+        for (let i = 2; i <= 10; i++) { //editar 4 para alterar o número de avaliações
             const lastEvaluation = await prisma.avaliations.findFirst({
                 where: { client_fk: user.id },
                 orderBy: { created_at: 'desc' },

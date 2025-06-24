@@ -53,6 +53,8 @@ npm run crisis_report || { echo "npm run crisis_report failed"; exit 1; }
 
 npm run atec || { echo "npm run atec failed"; exit 1; }
 
+npm run cars || { echo "npm run cars failed"; exit 1; }
+
 npm run autism_behavior_checklist || { echo "npm run atec failed"; exit 1; }
 
 # Run the hexagonRecSys setup
