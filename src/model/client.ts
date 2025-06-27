@@ -15,15 +15,17 @@ export const ClientCreate = async (
 
 ) => {
 
+    console.log( identifier, code, full_name, birthdate, gender, description, creator_fk    );
+
     const client = await prisma.clients.create({
         data: {
-            identifier,
-            code,
-            full_name,
-            birthdate,
-            gender,
-            description,
-            creator_fk
+            identifier: identifier,
+            code: code,
+            full_name: full_name,
+            birthdate: birthdate,
+            gender: gender,
+            description: description,
+            creator_fk: creator_fk
         }
     })
 

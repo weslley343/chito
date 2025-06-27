@@ -32,7 +32,7 @@ export function errorHandler(error: Error, req: Request, res: Response, next: Ne
             })
         } else {
             console.log('\n Error middleware ʕノ•ᴥ•ʔノ ︵ ┻━┻\n', error)
-            return res.status(500).json({ "error": "could not fetch data" })
+            return res.status(400).json({ "error": "could not fetch data" })
         }
     }
 }

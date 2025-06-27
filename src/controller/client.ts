@@ -13,7 +13,7 @@ export const controllerClientCreate = async (req: Request, res: Response) => {
         description
     } = req.body;
     const id = res.locals.id
-    const client = await ClientCreate(identifier, randomCode(7), full_name, birthdate, gender, description, id);
+    const client = await ClientCreate(identifier, randomCode(5), full_name, birthdate, gender, description, id);
     await modelClientResponsibleCreate(client.id, id)
     res.status(201).json(client);
 };
