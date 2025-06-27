@@ -6,8 +6,8 @@ export function errorHandler(error: Error, req: Request, res: Response, next: Ne
     if (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
             console.log(error)
-            res.status(500).json({
-                "msg": "Database Error."
+            res.status(400).json({
+                "msg": "Something in your request is not found or the database is down ;-; try to contact-me @github.com/weslley343",
             })
         } else if (error instanceof InteralServerError) {
             res.status(error.statusCode).json({
